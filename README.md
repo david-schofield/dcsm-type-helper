@@ -32,10 +32,3 @@ import { typeIs } from 'dcsm-type-helper';
 typeIs(1); // { array: false, date: false, nan: false, number: true, function: false, regexp: false, boolean: false, null: false, undefined: false, object: false, string: false, symbol: false, bigint: false }
 typeIs(1).number; // true
 ```
-
-
-## License
-
-This project is licensed under the UNLICENSED - see the [LICENSE](LICENSE) file for details.
-
-I hope that helps! Let me know if you have any other questions.
