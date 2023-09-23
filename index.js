@@ -1,15 +1,12 @@
+/**
+ * This module exports the TypeHelper class and a default wrapper function.
+ * @module dcsm-type-helper
+ */
 import {
-  typeOf,
-  typeIs
+  TypeHelper,
+  default as typeHelper
 } from "./src/type-of.js";
-import {
-  default as Type
-} from "./src/type-of.js";
-
-// Export the typeOf, typeIs function as a named export
 export {
-  typeOf,
-  typeIs
+  TypeHelper
 };
-// Export the help method from the Type class as the default export
-export default Type;
+export default typeHelper;

@@ -1,10 +1,13 @@
 {
   "name": "dcsm-type-helper",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "repository": "david-schofield/dcsm-type-helper",
   "main": "./index.js",
   "types": "./index.d.ts",
-  "description": "A vanilla JavaScript module for checking the type of a variable in a more robust way than the typeof operator.",
+  "scripts": {
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "description": "A vanilla JavaScript library for checking the type of variables in a more robust and accurate way than the typeof operator",
   "type": "module",
   "exports": {
     ".": "./index.js"
@@ -25,5 +28,8 @@
     "node": ">=16.0.0"
   },
   "author": "David Schofield <david@schofield.se> (https://schofield.se/)",
-  "license": "MPL-2.0"
+  "license": "MPL-2.0",
+  "devDependencies": {
+    "jest": "^27.0.6"
+  }
 }
