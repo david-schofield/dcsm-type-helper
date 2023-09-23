@@ -39,16 +39,14 @@ npm install dcsm-type-helper
 import { TypeHelper } from 'dcsm-type-helper';
 
 const typeHelper = new TypeHelper('hello', 123, true);
-const types = typeHelper.getTypeof();
-console.log(types); // ['string', 'number', 'boolean']
+console.log(typeHelper.getTypeof()); // ['string', 'number', 'boolean']
 ```
 
 ### Using the wrapper function instead of the class
 ```javascript
 import { default as typeHelper } from 'dcsm-type-helper';
 
-const types = typeHelper('hello', 123, true).getTypeof();
-console.log(types); // ['string', 'number', 'boolean']
+console.log(typeHelper('hello', 123, true).getTypeof()); // ['string', 'number', 'boolean']
 ```
 
 ## Examples
@@ -83,53 +81,31 @@ function isObject(...valuesToCheck) {
   return typeHelper.isTypeof('object');
 }
 
-const getTypeofExample = getTypeof('hello', 123, true);
-console.log(getTypeofExample); // ['string', 'number', 'boolean']
+console.log(getTypeof('hello', 123, true)); // ['string', 'number', 'boolean']
+console.log(isTypeof('string', 'hello')); // true
+console.log(notTypeof('string', 123)); // true
+console.log(getTypeofPretty('hello', 123, true)); // ['String', 'Number', 'Boolean']
+console.log(isObject({hello: 'World'})); // true
 
-const isStringExample = isTypeof('string', 'hello');
-console.log(isStringExample); // true
 
-const isNumberExample = isTypeof('number', 123);
-console.log(isNumberExample); // true
-
-console.log(
-    isObject({hello: 'World'})
-  ); // true
-
-const notStringExample = notTypeof('string', 123);
-console.log(notStringExample); // true
-
-const notNumberExample = notTypeof('number', 'hello');
-console.log(notNumberExample); // true
-
-const prettyTypeExample = getTypeofPretty('hello', 123, true);
-console.log(prettyTypeExample); // ['String', 'Number', 'Boolean']
 ```
 
 ---
 
 ### Handling errors
-a simple try-catch example when using the `isTypeof` method with the `disableThrowErrors` option set to `false`:
+A simple try-catch example for handling the error thrown when using the `notTypeof` method:
 
 ```javascript
-// Create a new instance of the TypeHelper class with some values to check
-const typeHelper = new TypeHelper('hello', 42, true, [], {});
-
+// Create a new instance of the TypeHelper class. Take note that no values are provided to the constructor.
+const typeHelper = new TypeHelper();
 try {
-  // Check if the first value is a string
-  const isString = typeHelper.isTypeof('string', { disableThrowErrors: false });
-  console.log(isString); // true
-
-  // Check if an invalid type is provided
-  const isInvalidType = typeHelper.isTypeof('invalid', { disableThrowErrors: false });
-  console.log(isInvalidType); // undefined
+  // This will throw an error because there are no values to check provided to the constructor.
+  typeHelper.notTypeof('object');
 } catch (error) {
-  console.error(error);
+  console.error(error.name); // InvalidValuesToCheckError
+  console.error(error.message); // No values to check were provided!
 }
 ```
-
-In this example, we create a new instance of the `TypeHelper` class with some values to check. We then use the `isTypeof` method with the `disableThrowErrors` option set to `false` to check if the first value is a string and if an invalid type is provided. If an error occurs, it will be caught by the try-catch block and logged to the console.
-
 
 
 ## API
