@@ -133,6 +133,34 @@ class TypeHelper {
   }
 
   /**
+   * Sets the options.
+   * @param {Object} [options={}] - The options to set.
+   * @param {boolean} [options.enablePrettyTypeNames=false] - Whether to use pretty type names.
+   * @param {boolean} [options.disableThrowErrors=false] - Whether to disable throwing errors.
+   * @throws {InvalidOptionsError} - If the options provided are invalid.
+   * @throws {InvalidOptionsTypeError} - If the options provided are not an object.
+   * @throws {InvalidOptionError} - If one of the options provided does not exist.
+   * @throws {InvalidOptionTypeError} - If one of the options provided is not of the correct type.
+   * @throws {InvalidOptionValueError} - If one of the options provided is not a valid value.
+   * @throws {InvalidOptionValueTypeError} - If one of the options provided is not of the correct type.
+   * @example
+   * const typeHelper = new TypeHelper('hello', 123, true);
+   * typeHelper.setOptions({
+   *  enablePrettyTypeNames: true,
+   * disableThrowErrors: true
+   * });
+   * const isString = typeHelper.isTypeof('string');
+   * // isString = 'String'
+   * const isNumber = typeHelper.isTypeof('number');
+   * // isNumber = 'Number'
+   * const isBoolean = typeHelper.isTypeof('boolean');
+   * // isBoolean = 'Boolean'
+   */
+  set setOptions(options = {}) {
+    this.#validateOptions(options);
+  }
+
+  /**
    * Handles an error.
    * @param {string} [errorMessage='An error occurred!'] - The error message.
    * @param {string} [errorName='Error'] - The error name.
@@ -172,6 +200,7 @@ function typeHelper(...valuesToCheck) {
 }
 
 export {
-  TypeHelper
+  TypeHelper,
+  typeHelper,
 };
 export default typeHelper;

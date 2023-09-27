@@ -1,3 +1,5 @@
+// TODO: Add declarations for the new any and all classes
+
 // Project: dcsm-type-helper
 declare module 'dcsm-type-helper' {
   /**
