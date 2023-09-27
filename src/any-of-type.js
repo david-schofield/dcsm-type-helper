@@ -76,7 +76,7 @@ class AnyOfType extends TypeHelper {
   }
 
   get isNumberMaxSafeInteger() {
-    if (this.number) {
+    if (this.isNumber) {
       return this.#valuesToCheck.some((value) => {
         return Number.isSafeInteger(value) && value <= Number.MAX_SAFE_INTEGER;
       });
@@ -392,7 +392,7 @@ class AnyOfType extends TypeHelper {
   // TODO: Add tests for these
   get isNumbersAreMaxSafeInteger() {
     const foundNumberMaxSafeInteger = this.#valuesToCheck.some((value) => {
-      const numberMaxSafeInteger = new AnyOfType(value).numberMaxSafeInteger;
+      const numberMaxSafeInteger = new AnyOfType(value).isNumberMaxSafeInteger;
       const isValueNumber = new TypeHelper(value).isTypeof('number');
       if (isValueNumber) {
         return numberMaxSafeInteger;
