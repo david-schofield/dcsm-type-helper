@@ -24,6 +24,66 @@ class TypeHelper {
     this.#valuesToCheck = valuesToCheck;
   }
 
+  get getOptions() {
+    return this.#options;
+  }
+
+  /**
+   * Get the type names.
+   * @returns [{lowercaseTypeNames: string[], prettyTypeNames: string[], methodNames: string[]}] The type names.
+   * @example
+   * const typeNames = TypeHelper.typeNames;
+   */
+  static get types() {
+    const lowercaseTypeNames = [...new Set(['string', 'object', 'number', 'boolean', 'symbol', 'undefined', 'null', 'array', 'bigint', 'date', 'regexp', 'error', 'map', 'set', 'weakmap', 'weakset', 'int8array', 'uint8array', 'int16array', 'uint16array', 'int32array', 'uint32array', 'float32array', 'float64array', 'bigint64array', 'biguint64array', 'arraybuffer', 'nan', 'infinity', 'mapiterator', 'setiterator', 'stringiterator', 'arrayiterator', 'function', 'generatorfunction', 'asyncfunction', 'asyncgeneratorfunction', 'proxy', 'arguments', 'generator', 'asyncgenerator', 'promise', 'dataview', 'typedarray', 'uint8clampedarray', 'internal', 'module', 'modulenamespaceobject'])];
+    const prettyTypeNames = [];
+    const methodNames = [];
+    const type = {};
+
+    lowercaseTypeNames.forEach((typeName) => {
+      const prettyTypeName = typeName.charAt(0).toUpperCase() + typeName.slice(1);
+      prettyTypeNames.push(prettyTypeName);
+      methodNames.push(`is${prettyTypeName}`);
+      methodNames.push(`not${prettyTypeName}`);
+      type[typeName] = {
+        pretty: prettyTypeName,
+        lowercase: typeName,
+        method: {
+          is: `is${prettyTypeName}`,
+          not: `not${prettyTypeName}`,
+        },
+      };
+    });
+
+    const types = {
+      lowercase: lowercaseTypeNames,
+      pretty: prettyTypeNames,
+      methodNames: methodNames.sort(),
+      type,
+    };
+    return types;
+  }
+
+  /**
+   * Gets the available methods.
+   * @returns {string[]} The available methods.
+   * @example
+   * const availableMethods = TypeHelper.availableMethods;
+   */
+  static get availableMethods() {
+    const types = TypeHelper.types;
+    let availableMethods = [];
+    types.lowercase.forEach((typeName) => {
+      const type = types.type[typeName];
+      availableMethods.push(type.method.is);
+      availableMethods.push(type.method.not);
+    });
+    const otherMethods = ['isNumberMaxSafeInteger', 'isNumbersAreMaxSafeInteger', 'isEmptyArray', 'notEmptyArray', 'isEmptyObject', 'notEmptyObject', 'isEmptyString', 'notEmptyString', 'isBooleanTrue', 'isBooleanFalse', 'isNumberZero', 'notNumberZero', 'isNumberPositive', 'isNumberNegative'];
+    availableMethods = [...availableMethods, ...otherMethods];
+    availableMethods.sort();
+    return [...new Set(availableMethods)];
+  }
+
   /**
    * Gets the type of the values to check.
    * @param {Object} [options={}] - The options for getting the type.
@@ -201,6 +261,7 @@ function typeHelper(...valuesToCheck) {
 
 export {
   TypeHelper,
+  TypeHelper as TypeOf,
   typeHelper,
 };
 export default typeHelper;

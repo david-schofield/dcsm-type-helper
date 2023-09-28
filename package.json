@@ -22,7 +22,22 @@
     "typeof",
     "typeof library",
     "typeof module",
-    "typeof checking"
+    "typeof checking",
+    "typeOf",
+    "isString",
+    "isNumber",
+    "isObject",
+    "isArray",
+    "isBooleanFalse",
+    "isRegexp",
+    "isProxy",
+    "isEmptyString",
+    "isEmptyObject",
+    "isEmptyArray",
+    "notString",
+    "notNumber",
+    "notObject",
+    "notArray"
   ],
   "engines": {
     "node": ">=16.0.0"
@@ -30,6 +45,7 @@
   "author": "David Schofield <david@schofield.se> (https://schofield.se/)",
   "license": "MPL-2.0",
   "devDependencies": {
-    "jest": "^27.0.6"
+    "jest": "^27.0.6",
+    "dcsm-print": "^1.1.0"
   }
 }

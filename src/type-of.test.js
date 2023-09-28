@@ -1,139 +1,90 @@
-
-import { TypeHelper } from '../src/type-of.js';
-
+import TypeHelper from './type-of.js';
 describe('TypeHelper', () => {
-  describe('constructor', () => {
-    it('creates a new instance of the TypeHelper class', () => {
-      const typeHelper = new TypeHelper();
-      expect(typeHelper).toBeInstanceOf(TypeHelper);
-    });
-
-    it('accepts values to check as arguments', () => {
-      const typeHelper = new TypeHelper('hello', 123, true);
-      expect(typeHelper).toBeInstanceOf(TypeHelper);
-    });
-  });
-/*
-  describe('getTypeof', () => {
-
-    it('returns the type of the value to check', () => {
-      const typeHelper = new TypeHelper('hello');
-      const type = typeHelper.getTypeof();
-      expect(type).toEqual('string');
-    });
-    
-    it('returns the type of the values to check', () => {
-      const typeHelper = new TypeHelper('hello', 123, true);
-      const type = typeHelper.getTypeof();
-      expect(type).toEqual(['string', 'number', 'boolean']);
-    });
-
-    it('returns pretty type names if enabled', () => {
-      const typeHelper = new TypeHelper('hello', 123, true);
-      const type = typeHelper.getTypeof({ enablePrettyTypeNames: true });
-      expect(type).toEqual(['String', 'Number', 'Boolean']);
-    });
-
-    it('throws an error if no values to check are provided', () => {
-      const typeHelper = new TypeHelper();
-      expect(() => {
-        typeHelper.getTypeof();
-      }).toThrow('No values to check were provided!');
-    });
-
-    it('does not throw an error if disabled', () => {
-      const typeHelper = new TypeHelper();
-      const type = typeHelper.getTypeof({ disableThrowErrors: true });
-      expect(type).toBeUndefined();
-    });
-  });
-
   describe('isTypeof', () => {
-    it('returns true if the values to check are of the specified type', () => {
+    it('should return true if the value is of the specified type', () => {
+      const typeHelper = new TypeHelper('hello');
+      expect(typeHelper.isTypeof('string')).toBe(true);
+      expect(typeHelper.isTypeof('number')).toBe(false);
+      expect(typeHelper.isTypeof('boolean')).toBe(false);
+    });
+
+    it('should return false if the value is not of the specified type', () => {
       const typeHelper = new TypeHelper('hello', 123, true);
-      const isString = typeHelper.isTypeof('string');
-      expect(isString).toBe(true);
+      expect(typeHelper.isTypeof('number')).toBe(false);
+      expect(typeHelper.isTypeof('boolean')).toBe(false);
+      expect(typeHelper.isTypeof('object')).toBe(false);
     });
 
-    it('returns false if the values to check are not of the specified type', () => {
+    it('should throw an error if the type to check is not a string', () => {
       const typeHelper = new TypeHelper('hello', 123, true);
-      const isObject = typeHelper.isTypeof('object');
-      expect(isObject).toBe(false);
+      expect(() => typeHelper.isTypeof(123)).toThrow();
+      expect(() => typeHelper.isTypeof(true)).toThrow();
+      expect(() => typeHelper.isTypeof({})).toThrow();
     });
-
-    it('returns undefined if no values to check are provided', () => {
-      const typeHelper = new TypeHelper();
-      const isString = typeHelper.isTypeof('string');
-      expect(isString).toBeUndefined();
-    });
-
-    it('throws an error if the type to check is not a lowercase string', () => {
-      const typeHelper = new TypeHelper('hello', 123, true);
-      expect(() => {
-        typeHelper.isTypeof('String');
-      }).toThrow('Type to check must be a lowercase string!');
-    });
-
-    it('does not throw an error if disabled', () => {
-      const typeHelper = new TypeHelper();
-      const isString = typeHelper.isTypeof('string', { disableThrowErrors: true });
-      expect(isString).toBeUndefined();
-    });
-
-    it('throws an error if the one of the options is not a boolean', () => {
-      const typeHelper = new TypeHelper('hello', 123, true);
-      expect(() => {
-        typeHelper.isTypeof('string', { enablePrettyTypeNames: 'YES' });
-      }).toThrow('Options must be a boolean! Received: YES');
-    });
-
-    it('throws an error if one of the options provided does not exist', () => {
-      const typeHelper = new TypeHelper('hello', 123, true);
-      expect(() => {
-        typeHelper.isTypeof('string', { enablePrettyTypeNames: true, disableThrowErrors: true, invalidOption: true });
-      }).toThrow('Invalid option provided! Received: invalidOption');
-    });
-
-    it('throws an error if the options object is not an object', () => {
-      const typeHelper = new TypeHelper('hello', 123, true);
-      expect(() => {
-        typeHelper.isTypeof('string', 'YES');
-      }).toThrow('Options must be an object! Received type: string');
-    });
-
   });
 
   describe('notTypeof', () => {
-    it('returns true if the values to check are not of the specified type', () => {
+    it('should return true if the value is not of the specified type', () => {
       const typeHelper = new TypeHelper('hello', 123, true);
-      const isObject = typeHelper.notTypeof('object');
-      expect(isObject).toBe(true);
+      expect(typeHelper.notTypeof('number')).toBe(true);
+      expect(typeHelper.notTypeof('boolean')).toBe(true);
+      expect(typeHelper.notTypeof('object')).toBe(true);
     });
 
-    it('returns false if the values to check are of the specified type', () => {
+    it('should return false if the value is of the specified type', () => {
       const typeHelper = new TypeHelper('hello', 123, true);
-      const isString = typeHelper.notTypeof('string');
-      expect(isString).toBe(false);
+      expect(typeHelper.notTypeof('string')).toBe(true);
+      expect(typeHelper.notTypeof('number')).toBe(true);
+      expect(typeHelper.notTypeof('boolean')).toBe(true);
     });
 
-    it('returns undefined if no values to check are provided', () => {
-      const typeHelper = new TypeHelper();
-      const isObject = typeHelper.notTypeof('object');
-      expect(isObject).toBeUndefined();
-    });
-
-    it('throws an error if the type to check is not a lowercase string', () => {
+    it('should throw an error if the type to check is not a string', () => {
       const typeHelper = new TypeHelper('hello', 123, true);
-      expect(() => {
-        typeHelper.notTypeof('String');
-      }).toThrow('Type to check must be a lowercase string!');
-    });
-
-    it('does not throw an error if disabled', () => {
-      const typeHelper = new TypeHelper();
-      const isObject = typeHelper.notTypeof('object', { disableThrowErrors: true });
-      expect(isObject).toBeUndefined();
+      expect(() => typeHelper.notTypeof(123)).toThrow();
+      expect(() => typeHelper.notTypeof(true)).toThrow();
+      expect(() => typeHelper.notTypeof({})).toThrow();
     });
   });
-  */
+
+  describe('setOptions', () => {
+    it('should set the options', () => {
+      const typeHelper = new TypeHelper('hello', 123, true);
+      typeHelper.setOptions = {
+        enablePrettyTypeNames: true,
+        disableThrowErrors: true,
+      };
+      expect(typeHelper.getOptions).toEqual({
+        enablePrettyTypeNames: true,
+        disableThrowErrors: true,
+      });
+    });
+
+    it('should throw an error if the options provided are invalid', () => {
+      const typeHelper = new TypeHelper('hello', 123, true);
+      expect(() => typeHelper.setOptions({ invalidOption: true })).toThrow();
+    });
+
+    it('should throw an error if the options provided are not an object', () => {
+      const typeHelper = new TypeHelper('hello', 123, true);
+      typeHelper.setOptions = {
+        enablePrettyTypeNames: true
+      };
+      expect(() => typeHelper.setOptions('invalid options')).toThrow();
+    });
+
+    it('should throw an error if one of the options provided does not exist', () => {
+      const typeHelper = new TypeHelper('hello', 123, true);
+      expect(() => typeHelper.setOptions({ invalidOption: true })).toThrow();
+    });
+
+    it('should throw an error if one of the options provided is not of the correct type', () => {
+      const typeHelper = new TypeHelper('hello', 123, true);
+      expect(() => typeHelper.setOptions({ enablePrettyTypeNames: 'invalid' })).toThrow();
+    });
+
+    it('should throw an error if one of the options provided is not a valid value', () => {
+      const typeHelper = new TypeHelper('hello', 123, true);
+      expect(() => typeHelper.setOptions({ disableThrowErrors: 'invalid' })).toThrow();
+    });
+  });
 });
