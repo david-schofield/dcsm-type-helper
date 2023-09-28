@@ -36,10 +36,64 @@ class TypeHelper {
    */
   static get types() {
     const lowercaseTypeNames = [...new Set(['string', 'object', 'number', 'boolean', 'symbol', 'undefined', 'null', 'array', 'bigint', 'date', 'regexp', 'error', 'map', 'set', 'weakmap', 'weakset', 'int8array', 'uint8array', 'int16array', 'uint16array', 'int32array', 'uint32array', 'float32array', 'float64array', 'bigint64array', 'biguint64array', 'arraybuffer', 'nan', 'infinity', 'mapiterator', 'setiterator', 'stringiterator', 'arrayiterator', 'function', 'generatorfunction', 'asyncfunction', 'asyncgeneratorfunction', 'proxy', 'arguments', 'generator', 'asyncgenerator', 'promise', 'dataview', 'typedarray', 'uint8clampedarray', 'internal', 'module', 'modulenamespaceobject'])];
-    const prettyTypeNames = [];
-    const methodNames = [];
+    const capitalizedTypeNames = [...new Set(lowercaseTypeNames.map((typeName) => typeName.charAt(0).toUpperCase() + typeName.slice(1)))];
+    let methods = ['isNumberMaxSafeInteger', 'isNumbersAreMaxSafeInteger', 'isEmptyArray', 'notEmptyArray', 'isEmptyObject', 'notEmptyObject', 'isEmptyString', 'notEmptyString', 'isBooleanTrue', 'isBooleanFalse', 'isNumberZero', 'notNumberZero', 'isNumberPositive', 'isNumberNegative'];
+
+    lowercaseTypeNames.forEach((typeName) => {
+      methods.push(`is${typeName.charAt(0).toUpperCase() + typeName.slice(1)}`);
+      methods.push(`not${typeName.charAt(0).toUpperCase() + typeName.slice(1)}`);
+    });
+
+    methods = [...new Set(methods)].sort();
+
+    function methodObject(typeName) {
+      return {
+        capitalized: typeName.charAt(0).toUpperCase() + typeName.slice(1),
+        camelCase: typeName.charAt(0).toLowerCase() + typeName.slice(1),
+        lowercase: typeName.toLowerCase()
+      };
+    }
+
+    const methodsObject = {};
+
+    methods.forEach((method) => {
+      methodsObject[method] = methodObject(method);
+    });
+
     const type = {};
 
+    function typeMethodObject(typeName) {
+      return {
+        capitalized: typeName.charAt(0).toUpperCase() + typeName.slice(1),
+        camelCase: typeName.charAt(0).toLowerCase() + typeName.slice(1),
+        lowercase: typeName.toLowerCase(),
+        pretty: typeName.charAt(0).toUpperCase() + typeName.slice(1),
+        method: {
+          is: `is${typeName.charAt(0).toUpperCase() + typeName.slice(1)}`,
+          not: `not${typeName.charAt(0).toUpperCase() + typeName.slice(1)}`,
+          Is: `Is${typeName.charAt(0).toUpperCase() + typeName.slice(1)}`,
+          Not: `Not${typeName.charAt(0).toUpperCase() + typeName.slice(1)}`
+        }
+      };
+    }
+
+    lowercaseTypeNames.forEach((typeName) => {
+      type[typeName] = typeMethodObject(typeName);
+    });
+
+    return {
+      typeNamesLowerCase: lowercaseTypeNames,
+      lowercase: lowercaseTypeNames, // For backwards compatibility.
+      typeNamesCapitalized: capitalizedTypeNames,
+      pretty: capitalizedTypeNames, // For backwards compatibility.
+      type,
+      methodsArray: methods,
+      methodNames: methods, // For backwards compatibility.
+      methodsObject
+    };
+
+
+    /*
     lowercaseTypeNames.forEach((typeName) => {
       const prettyTypeName = typeName.charAt(0).toUpperCase() + typeName.slice(1);
       prettyTypeNames.push(prettyTypeName);
@@ -51,9 +105,12 @@ class TypeHelper {
         method: {
           is: `is${prettyTypeName}`,
           not: `not${prettyTypeName}`,
+          Is: `Is${prettyTypeName}`,
+          Not: `Not${prettyTypeName}`,
         },
       };
     });
+
 
     const types = {
       lowercase: lowercaseTypeNames,
@@ -62,6 +119,7 @@ class TypeHelper {
       type,
     };
     return types;
+    */
   }
 
   /**
@@ -72,16 +130,8 @@ class TypeHelper {
    */
   static get availableMethods() {
     const types = TypeHelper.types;
-    let availableMethods = [];
-    types.lowercase.forEach((typeName) => {
-      const type = types.type[typeName];
-      availableMethods.push(type.method.is);
-      availableMethods.push(type.method.not);
-    });
-    const otherMethods = ['isNumberMaxSafeInteger', 'isNumbersAreMaxSafeInteger', 'isEmptyArray', 'notEmptyArray', 'isEmptyObject', 'notEmptyObject', 'isEmptyString', 'notEmptyString', 'isBooleanTrue', 'isBooleanFalse', 'isNumberZero', 'notNumberZero', 'isNumberPositive', 'isNumberNegative'];
-    availableMethods = [...availableMethods, ...otherMethods];
-    availableMethods.sort();
-    return [...new Set(availableMethods)];
+    const methodsArray = types.methodsArray;
+    return [...new Set(methodsArray)].sort();
   }
 
   /**

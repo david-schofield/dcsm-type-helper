@@ -39,6 +39,8 @@ import {
   help as anyOfTypeHelp
 } from "./src/any-of-type.js";
 
+
+
 /**
  * TypeOf class extends TypeHelper class and provides methods to check the type of values.
  * @extends TypeHelper
@@ -79,11 +81,25 @@ import {
  * // Logs all the available methods and examples for the TypeOf class.
  */
 class TypeOf extends TypeHelper {
+  /**
+ * TODO: 
+ * TypeOf(values).isString
+    TypeOf(values).notString
+
+    TypeOf(values).someValueIsString
+    TypeOf(values).someValueNotString
+
+    TypeOf(values).everyValueIsString
+    TypeOf(values).everyValueNotString
+**/
+
   // The #typeOfMethods property is used to store the all and any methods.
   #typeOfMethods = {};
+  #availableMethods = [];
   constructor(...values) {
     super(...values);
     const availableMethods = TypeHelper.availableMethods;
+    const methodsObject = TypeHelper.types.methodsObject;
     const allOfTypeInstance = new AllOfType(...values);
     const anyOfTypeInstance = new AnyOfType(...values);
 
@@ -98,9 +114,22 @@ class TypeOf extends TypeHelper {
 
     // Add all the available methods to the TypeOf class.
     availableMethods.forEach((method) => {
+      this.#availableMethods.push(method);
+      this.#availableMethods.push(`everyValue${methodsObject[method].capitalized}`);
+      this.#availableMethods.push(`someValue${methodsObject[method].capitalized}`);
       Object.defineProperty(this, method, {
         get: function () {
           return allOfTypeInstance[method];
+        }
+      });
+      Object.defineProperty(this, `everyValue${methodsObject[method].capitalized}`, {
+        get: function () {
+          return allOfTypeInstance[method];
+        }
+      });
+      Object.defineProperty(this, `someValue${methodsObject[method].capitalized}`, {
+        get: function () {
+          return anyOfTypeInstance[method];
         }
       });
       typeOfMethods.all[method] = allOfTypeInstance[method];
@@ -152,7 +181,13 @@ class TypeOf extends TypeHelper {
 
 
   static get help() {
-    const availableMethods = TypeHelper.availableMethods;
+    const availableMethods = [];
+    const methodsObject = TypeHelper.types.methodsObject;
+    TypeHelper.availableMethods.forEach((method) => {
+      availableMethods.push(method);
+      availableMethods.push(`everyValue${methodsObject[method].capitalized}`);
+      availableMethods.push(`someValue${methodsObject[method].capitalized}`);
+    });
     const help = `
 
 Avaliable methods for TypeOf class:
