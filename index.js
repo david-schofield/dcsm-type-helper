@@ -18,8 +18,7 @@ import {
  */
 import {
   AllOfType,
-  help as allOfTypeHelp,
-  default as allOfType
+  help as allOfTypeHelp
 } from "./src/all-of-type.js";
 
 
@@ -37,8 +36,7 @@ import {
  */
 import {
   AnyOfType,
-  help as anyOfTypeHelp,
-  default as anyOfType
+  help as anyOfTypeHelp
 } from "./src/any-of-type.js";
 
 /**
@@ -222,10 +220,6 @@ function typeOf(...values) {
 export {
   TypeHelper, // The TypeHelper class.
   typeHelper, // The default wrapper function for the TypeHelper class.
-  AllOfType, // The AllOfType class.
-  allOfType, // The default wrapper function for the AllOfType class.
-  AnyOfType, // The AnyOfType class.
-  anyOfType, // The default wrapper function for the AnyOfType class.
   TypeOf, // The TypeHelper class.
   typeOf // The wrapper function for the TypeHelper class.
 };
