@@ -1,4 +1,3 @@
-
 import {
   TypeOfMethods
 } from './type-of-methods';
@@ -183,41 +182,28 @@ describe('TypeOfMethods', () => {
     });
   });
 
-  /*
   describe('setOptions', () => {
-    it('should set the options for the instance', () => {
+    it('should throw an error if the options are invalid', () => {
       const instance = new TypeOfMethods(1, '2', true);
-      instance.setOptions({
-        ignoreUndefined: true
-      });
-      expect(instance.getOptions().ignoreUndefined).toBe(true);
+      expect(() => {
+        instance.setOptions = {
+          oops: true
+        }
+      }).toThrowError(
+        `Invalid options provided!
+  oops: Is not a valid option! Received option: oops
+Valid options are:
+  enableCapitalizedTypeNames: {boolean}
+  disableThrowErrors: {boolean}`
+      ); // TODO: Check for the correct error message
     });
   });
-  */
-
-  /*
-  describe('getOptions', () => {
-    it('should return the options for the instance', () => {
-      const instance = new TypeOfMethods(1, '2', true);
-      instance.setOptions({
-        ignoreUndefined: true
-      });
-      expect(instance.getOptions().ignoreUndefined).toBe(true);
-    });
-  });
-*/
-  // Add more tests for other methods as needed
 
   describe('getTypeof', () => {
-
     it('should return an array of booleans if any values are undefined', () => {
       const instance = new TypeOfMethods(1, '2', true, undefined);
       expect(instance.getTypeof()).toEqual(['number', 'string', 'boolean', 'undefined']);
     });
   });
-
-
-
-
 
 });

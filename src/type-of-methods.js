@@ -1,22 +1,3 @@
-/*
- FAIL  src/type-of-methods.test.js
-  ● TypeOfMethods › someValueNotBoolean › should return true if any value is not boolean
-
-    expect(received).toBe(expected) // Object.is equality
-
-    Expected: true
-    Received: false
-
-      103 |     it('should return true if any value is not boolean', () => {
-      104 |       const instance = new TypeOfMethods(1, 2, 'true');
-    > 105 |       expect(instance.someValueNotBoolean).toBe(true);
-          |                                            ^
-      106 |     });
-
-      */
-
-
-
 import {
   TypeOfHelper,
 } from "./type-of-helper.js";
@@ -36,9 +17,6 @@ class TypeOfMethods extends TypeOfHelper {
     const typeOfHelper = super(...valuesToCheck);
     const useCases = ['is', 'not', 'everyValueIs', 'everyValueNot', 'someValueIs', 'someValueNot'];
     const types = TypeOfHelper.getTypes.types;
-
-
-
 
     /**
      * Defines the methods for the types. The methods are defined as getters. 

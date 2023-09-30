@@ -14,11 +14,11 @@ class TypeOfHelper {
    * Object containing options to configure the behavior of the class.
    * @private
    * @type {Object}
-   * @property {boolean} enablePrettyTypeNames - Whether to use pretty type names.
+   * @property {boolean} enableCapitalizedTypeNames - Whether to use capitalized type names.
    * @property {boolean} disableThrowErrors - Whether to disable throwing errors.
    */
   #options = {
-    enablePrettyTypeNames: false,
+    enableCapitalizedTypeNames: false,
     disableThrowErrors: false,
   };
   /**
@@ -60,7 +60,7 @@ class TypeOfHelper {
   /**
    * Sets the options.
    * @param {Object} [options={}] - The options to set.
-   * @param {boolean} [options.enablePrettyTypeNames=false] - Whether to use pretty type names.
+   * @param {boolean} [options.enableCapitalizedTypeNames=false] - Whether to use capitalized type names.
    * @param {boolean} [options.disableThrowErrors=false] - Whether to disable throwing errors.
    * @throws {InvalidOptionsError} - If the options provided are invalid.
    * @throws {InvalidOptionsTypeError} - If the options provided are not an object.
@@ -102,7 +102,7 @@ class TypeOfHelper {
   /**
    * Returns the type of the values to check.
    * @param {Object} options - The options object.
-   * @param {boolean} options.enablePrettyTypeNames - Whether to return pretty type names or not.
+   * @param {boolean} options.enableCapitalizedTypeNames - Whether to return capitalized type names.
    * @returns {(string|string[]|undefined)} - The type of the values to check, or undefined if an error occurred.
    * @throws {NoValuesToCheckError} - If there are no values to check.
    * @throws {UnknownTypeError} - If an unknown type is detected.
@@ -115,7 +115,7 @@ class TypeOfHelper {
     }
 
     const typeOfValues = Array.from(this.#valuesToCheck, (valueToCheck) => {
-      if (options.enablePrettyTypeNames === true) {
+      if (options.enableCapitalizedTypeNames === true) {
         return this.#typeOfValue(valueToCheck);
       }
       return this.#typeOfValue(valueToCheck).toLowerCase();
@@ -253,6 +253,9 @@ class TypeOfHelper {
    * Handles an error.
    * @param {string} [errorMessage='An error occurred!'] - The error message.
    * @param {string} [errorName='Error'] - The error name.
+   * @throws {Error} - Throws an error if disableThrowErrors is false.
+   * @private
+   * @returns {undefined}
    */
   #handleError(errorMessage = 'An error occurred!', errorName = 'Error') {
     if (this.#options.disableThrowErrors === false) {
@@ -283,6 +286,7 @@ class TypeOfHelper {
     return identifiedType;
   }
 }
+
 
 export {
   TypeOfHelper
