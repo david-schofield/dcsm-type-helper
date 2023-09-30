@@ -9,12 +9,12 @@ declare module 'dcsm-type-helper' {
     /**
      * Whether to use pretty type names in the output.
      */
-    usePrettyTypeNames?: boolean;
+    enableCapitalizedTypeNames?: boolean;
 
     /**
-     * Whether to disable throwing errors when checking types.
+     * Whether to disable throwing errors
      */
-    disableErrorThrowing?: boolean;
+    disableThrowErrors?: boolean;
   }
 
   /**

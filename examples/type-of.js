@@ -5,7 +5,8 @@ console.print = function () {
   Print(...arguments);
 }
 import {
-  TypeOf
+  TypeOf,
+  typeOfHelp
 } from "../index.js";
 
 
@@ -39,3 +40,5 @@ console.print(typeOfWithOptions.isString);
 console.print(new TypeOf(1, 2, 3).isNumber);
 console.print(new TypeOf(1, 2, 3).isString);
 console.print(new TypeOf(1, 2, 3).isNumber);
+
+typeOfHelp();

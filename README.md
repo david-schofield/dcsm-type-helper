@@ -1,96 +1,60 @@
 # dcsm-type-helper
 
 [![npm version](https://badge.fury.io/js/dcsm-type-helper.svg)](https://badge.fury.io/js/dcsm-type-helper)
-![Static Badge](https://img.shields.io/badge/JavaScript_Style_Guide-Airbnb_ES6%2B-blue?style=flat)
+[![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
+
+`dcsm-type-helper` is a JavaScript library that provides a `TypeOf` class and a `getTypeof` function for checking the types of values. The `TypeOf` class allows you to create an instance with multiple values and options, while the `getTypeof` function allows you to check the type of a single value or multiple values at once.
 
 A vanilla JavaScript library for checking the type of variables in a more robust and accurate way than the typeof operator. It can be used to get the type of one or more values and check if one or more values are of a specified type or not. 
 
-## Installation
+## Features
 
-```bash
-npm install dcsm-type-helper
-```
+- Provides a simple and easy-to-use interface for checking the types of values in JavaScript.
+
+- Allows you to check the type of a single value or multiple values at once.
+
+- Provides options for customizing the behavior of the `TypeOf` class.
+  
+- Provides a set of methods for checking the type of values such as `isNumber`, `isObject`, `isBigInt`, etc.
+  
+- It also comes with some other useful methods such as `isEmptyArray`, `isBooleanTrue`, `isNumberZero`, etc.
 
 ## Table of Contents
-- [dcsm-type-helper](#dcsm-type-helper)
-  - [Installation](#installation)
-  - [Table of Contents](#table-of-contents)
-  - [Usage](#usage)
-    - [Using the class directly](#using-the-class-directly)
-    - [Using the wrapper function instead of the class](#using-the-wrapper-function-instead-of-the-class)
-  - [Examples](#examples)
-    - [Create your own helper functions](#create-your-own-helper-functions)
-    - [Handling errors](#handling-errors)
-  - [API](#api)
-    - [`constructor(...valuesToCheck)`](#constructorvaluestocheck)
-    - [`getTypeof(options)`](#gettypeofoptions)
-    - [`isTypeof(typeToCheck, options)`](#istypeoftypetocheck-options)
-    - [`notTypeof(typeToCheck, options)`](#nottypeoftypetocheck-options)
-    - [The `options` parameter](#the-options-parameter)
-    - [1. `enablePrettyTypeNames`:](#1-enableprettytypenames)
-    - [2. `disableThrowErrors`:](#2-disablethrowerrors)
-    - [The default behavior](#the-default-behavior)
-  - [License](#license)
+
+- [Installation](#installation)
+- [Usage](#usage)
+  - [TypeOf](#typeof)
+  - [getTypeof](#gettypeof)
+  - [typeOfHelp](#typeofhelp)
+- [API](#api)
+- [License](#license)
+
+## Installation
+
+To install `dcsm-type-helper`, you can use npm:
+
+```
+npm install dcsm-type-helper
+```
 
 ## Usage
 
 ### Using the class directly
-```javascript
-import { TypeHelper } from 'dcsm-type-helper';
-
-const typeHelper = new TypeHelper('hello', 123, true);
-console.log(typeHelper.getTypeof()); // ['string', 'number', 'boolean']
-```
-
-### Using the wrapper function instead of the class
-```javascript
-import { default as typeHelper } from 'dcsm-type-helper';
-
-console.log(typeHelper('hello', 123, true).getTypeof()); // ['string', 'number', 'boolean']
-```
-
-## Examples
-
-### Create your own helper functions
 
 ```javascript
-import { TypeHelper } from 'dcsm-type-helper';
+import { TypeOf, getTypeof, typeOfHelp } from "dcsm-type-helper";
 
-function getTypeof(...valuesToCheck) {
-  const typeHelper = new TypeHelper(...valuesToCheck);
-  return typeHelper.getTypeof();
-}
+const typeOfInstance = new TypeOf("hello", 42, true);
+console.log(typeOfInstance.isString); // false
+console.log(typeOfInstance.isSomeValueString); // true
+console.log(typeOfInstance.isSomeValueNumber); // true
 
-function isTypeof(typeToCheck, ...valuesToCheck) {
-  const typeHelper = new TypeHelper(...valuesToCheck);
-  return typeHelper.isTypeof(typeToCheck);
-}
+const types = getTypeof("hello", 42, true);
+console.log(types); // ["string", "number", "boolean"]
 
-function notTypeof(typeToCheck, ...valuesToCheck) {
-  const typeHelper = new TypeHelper(...valuesToCheck);
-  return typeHelper.notTypeof(typeToCheck);
-}
-
-function getTypeofPretty(...valuesToCheck) {
-  const typeHelper = new TypeHelper(...valuesToCheck);
-  return typeHelper.getTypeof({ enablePrettyTypeNames: true });
-}
-
-function isObject(...valuesToCheck) {
-  const typeHelper = new TypeHelper(...valuesToCheck);
-  return typeHelper.isTypeof('object');
-}
-
-console.log(getTypeof('hello', 123, true)); // ['string', 'number', 'boolean']
-console.log(isTypeof('string', 'hello')); // true
-console.log(notTypeof('string', 123)); // true
-console.log(getTypeofPretty('hello', 123, true)); // ['String', 'Number', 'Boolean']
-console.log(isObject({hello: 'World'})); // true
-
+typeOfHelp();
 
 ```
-
----
 
 ### Handling errors
 A simple try-catch example for handling the error thrown when using the `notTypeof` method:
@@ -107,124 +71,499 @@ try {
 }
 ```
 
+### Using the default export
+
+```javascript
+import default as getTypeof from "dcsm-type-helper";
+
+const types = getTypeof("hello", 42, true);
+console.log(types); // ["string", "number", "boolean"]
+```
+
+### Using the class with options
+
+```javascript
+import { TypeOf } from "dcsm-type-helper";
+
+const typeOfInstance = new TypeOf("hello", 42, true, {
+  enableCapitalizedTypeNames: true,
+  disableThrowErrors: true,
+});
+console.log(typeOfInstance.getTypeof());
+```
+
+### Getting help
+
+```javascript
+import { typeOfHelp } from "dcsm-type-helper";
+
+typeOfHelp();
+```
+
+### TypeOf
+
+The `TypeOf` class allows you to create an instance with multiple values and options. Here's an example:
+
+```javascript
+const typeOfInstance = new TypeOf("hello", 42, true);
+```
+
+You can then use the `getTypeof` function to check the type of a value:
+
+```javascript
+const stringType = getTypeof(typeOfInstance, "hello");
+console.log(stringType); // "string"
+```
+
+### getTypeof
+
+The `getTypeof` function allows you to check the type of a single value or multiple values at once. Here's an example:
+
+```javascript
+const myString = "hello";
+const myNumber = 42;
+const myBoolean = true;
+
+const stringType = getTypeof(myString);
+console.log(stringType); // "string"
+
+const types = getTypeof(myString, myNumber, myBoolean);
+console.log(types); // ["string", "number", "boolean"]
+```
 
 ## API
 
-### `constructor(...valuesToCheck)`
+### `TypeOf`
 
-Creates a new instance of the TypeHelper class.
+#### `constructor(...values: any[], options?: TypeOfOptions): TypeOf`
 
-- `valuesToCheck` - The values to check the type of.
+Creates a new instance of the `TypeOf` class with the specified values and options.
 
----
+- `values`: The values to check the type of.
+- `options`: An optional object with the following properties:
+  - `enableCapitalizedTypeNames`: A boolean value indicating whether to use capitalized type names. If `true`, the `TypeOf` class will use capitalized type names (e.g. `String` instead of `string`). If `false` (the default), the `TypeOf` class will use lowercase type names.
+  - `disableThrowErrors`: A boolean value indicating whether to disable throwing errors. If `true`, the `TypeOf` class will not throw errors when invalid options are provided. If `false` (the default), the `TypeOf` class will throw errors when invalid options are provided.
 
-### `getTypeof(options)`
+#### `setOptions(options: TypeOfOptions): void`
 
-Gets the types of the values provided to the constructor.
+Sets the options for an instance of the `TypeOf` class.
 
-- `options` (optional): The options to use when getting the types.
+- `options`: An object with the same properties as the `options` object passed to the constructor.
 
-Returns the types of the values provided to the constructor, as an array of strings containing the types of the values. Or a single string containing the type of the value if only one value was provided to the constructor.
+GitHub Copilot: The `enableCapitalizedTypeNames` option in the `TypeOf` and `TypeOfHelper` classes is used to determine whether the type names returned by the `getTypeof` method should be capitalized or not. 
 
----
+If `enableCapitalizedTypeNames` is set to `true`, the `getTypeof` method will return capitalized type names (e.g. `String` instead of `string`). If `enableCapitalizedTypeNames` is set to `false` (the default), the `getTypeof` method will return lowercase type names.
 
-### `isTypeof(typeToCheck, options)`
+This option can be useful if you want to standardize the formatting of the type names returned by the `getTypeof` method, or if you prefer capitalized type names for consistency with other parts of your codebase.
 
-Checks if the values to check are of the specified type.
+GitHub Copilot: The `disableThrowErrors` option in the `TypeOf` and `TypeOfHelper` classes is used to determine whether the classes should throw errors when invalid options are provided. 
 
-- `typeToCheck`: The type to check for.
-- `options` (optional): The options to use when checking the type.
+If `disableThrowErrors` is set to `true`, the classes will not throw errors when invalid options are provided. If `disableThrowErrors` is set to `false` (the default), the classes will throw errors when invalid options are provided.
 
-Returns `true` if the values to check are of the specified type, `false` otherwise.
+This option can be useful if you want to disable error handling for some reason, or if you want to handle errors in a custom way. However, it's generally recommended to leave `disableThrowErrors` set to `false` so that errors are thrown when invalid options are provided, as this can help catch bugs and prevent unexpected behavior.
 
----
-
-### `notTypeof(typeToCheck, options)`
-
-Checks if the values to check are not of the specified type.
-
-- `typeToCheck`: The type to check for.
-- `options` (optional): The options to use when checking the type.
-
-Returns `true` if the values to check are not of the specified type, `false` otherwise.
-
----
-
-### The `options` parameter
-
-The `getTypeof`, `isTypeof`, and `notTypeof` methods can be provided with an `options` object as an optional parameter.
-
-The `options` object has two boolean properties:
-
-### 1. `enablePrettyTypeNames`: 
-When set to `true`, the `getTypeof` method returns pretty type names instead of the default lowercase type names. This option can be useful when you want to display the type of a value in a user-friendly way. Here are some examples of types that `getTypeof` would return with the option `enablePrettyTypeNames` set to `true`:
-
-- `'Undefined'` for undefined values
-- `'Null'` for null values
-- `'Boolean'` for boolean values
-- `'Number'` for number values
-- `'String'` for string values
-- `'Symbol'` for symbol values
-- `'Object'` for object values (excluding null and arrays)
-- `'Array'` for array values
-- `'Function'` for function values
-- `'BigInt'` for bigint values
-- `'Date'` for date objects
-- `'RegExp'` for regular expression objects
-- `'Map'` for map objects
-- `'Set'` for set objects
-- `'WeakMap'` for weakmap objects
-- `'WeakSet'` for weakset objects
-- `'Int8Array'` for 8-bit signed integer arrays
-- `'Uint8Array'` for 8-bit unsigned integer arrays
-- `'Int16Array'` for 16-bit signed integer arrays
-- `'Uint16Array'` for 16-bit unsigned integer arrays
-- `'Int32Array'` for 32-bit signed integer arrays
-- `'Uint32Array'` for 32-bit unsigned integer arrays
-- `'Float32Array'` for 32-bit floating point arrays
-- `'Float64Array'` for 64-bit floating point arrays
-- `'ArrayBuffer'` for array buffer objects
-- `'SharedArrayBuffer'` for shared array buffer objects
-- `'DataView'` for data view objects
-- `'Error'` for error objects
-- `'Promise'` for promise objects
-
-Note that the exact list of types returned by `getTypeof` may vary depending on the JavaScript engine being used. Not all types have pretty type names, so some types will still be returned as lowercase strings
-
-If enablePrettyTypeNames is set to `false` or not provided, the `getTypeof` method will return lowercase type names instead of pretty type names. For example, instead of returning `'String'`, it would return `'string'`.
-
-### 2. `disableThrowErrors`:
-When set to `true`, this property disables the methods throwing errors when an error occurs. Instead, the methods will return `undefined` when an error occurs. This is useful when you want to check the type of a value without having to handle thrown errors. However, it's important to note that if an error occurs and `disableThrowErrors` is set to `true`, the methods will not provide any information about the error since they will always only return `undefined`. It's up to you to handle the returned `undefined` value when an error occurs.
-
-Examples of errors that can occur in the `getTypeof`, `isTypeof`, and `notTypeof` methods of the `TypeHelper` class:
-
-- `NoValuesToCheckError`: This error occurs when there are no values to check in the `getTypeof`, `isTypeof`, and `notTypeof` methods.
-- `UnknownTypeError`: This error occurs when an unknown type is detected in the `getTypeof` method.
-- `InvalidTypeToCheckError`: This error occurs when the `typeToCheck` parameter in the `isTypeof` or `notTypeof` method is not a string containing only alphanumeric characters.
-- `InvalidOptionsTypeError`: This error occurs when the `options` parameter in the `getTypeof`, `isTypeof`, and `notTypeof` methods is not an object.
-- `InvalidOptionsError`: This error occurs when the `options` parameter in the `getTypeof`, `isTypeof`, and `notTypeof` methods contains invalid options or values.
-- `InvalidValuesToCheckError`: This error occurs when no values are provided to the `TypeHelper` constructor.
-
-These errors can be thrown if the corresponding conditions are met. However, if `disableThrowErrors` is set to `true`, the methods will not throw these errors and will instead return `undefined` when an error occurs. It's up to you to handle the returned `undefined` value when an error occurs.
-
----
-
-### The default behavior 
-
-The `getTypeof`, `isTypeof`, and `notTypeof` methods when `options` is not provided is to use the default options object, which has the following properties:
+Example:
 
 ```javascript
-{
-  enablePrettyTypeNames: false,
-  disableThrowErrors: false,
-}
+const typeOfInstance = new TypeOf("hello", 42, true);
+typeOfInstance.setOptions({ enableCapitalizedTypeNames: true });
 ```
 
-This means that if you don't provide an `options` object when calling these methods, they will use the default options object and behave accordingly. Providing an `options` object is optional, but it can be useful if you want to customize the behavior of these methods. If you provide an option that is not supported by the method, the method will throw an error and tell you which option is not supported. If you provide an option that is supported by the method but has an invalid value, the method will throw an error and tell you which option has an invalid value.
+#### `getOptions(): TypeOfOptions`
 
----
+Gets the options for an instance of the `TypeOf` class.
+
+- Returns an object with the same properties as the `options` object passed to the constructor.
+
+### `getTypeof`
+
+#### `getTypeof(...values: any[]): string | string[]`
+
+Checks the type of a single value or multiple values at once.
+
+- `values`: The values to check the type of.
+
+- Returns a string with the type of the value if a single value is passed, or an array of strings with the types of the values if multiple values are passed.
+
+
+### `typeOfHelp(): string`
+
+Console logs the help for the `TypeOf` class.
+
+- Returns the following string with the help information.
+
+
+```
+Evaluate all the values of the instance. Returns boolean.
+
+isArguments
+notArguments
+everyValueIsArguments
+everyValueNotArguments
+someValueIsArguments
+someValueNotArguments
+isArray
+notArray
+everyValueIsArray
+everyValueNotArray
+someValueIsArray
+someValueNotArray
+isArraybuffer
+notArraybuffer
+everyValueIsArraybuffer
+everyValueNotArraybuffer
+someValueIsArraybuffer
+someValueNotArraybuffer
+isArrayiterator
+notArrayiterator
+everyValueIsArrayiterator
+everyValueNotArrayiterator
+someValueIsArrayiterator
+someValueNotArrayiterator
+isAsyncfunction
+notAsyncfunction
+everyValueIsAsyncfunction
+everyValueNotAsyncfunction
+someValueIsAsyncfunction
+someValueNotAsyncfunction
+isAsyncgenerator
+notAsyncgenerator
+everyValueIsAsyncgenerator
+everyValueNotAsyncgenerator
+someValueIsAsyncgenerator
+someValueNotAsyncgenerator
+isAsyncgeneratorfunction
+notAsyncgeneratorfunction
+everyValueIsAsyncgeneratorfunction
+everyValueNotAsyncgeneratorfunction
+someValueIsAsyncgeneratorfunction
+someValueNotAsyncgeneratorfunction
+isBigint
+notBigint
+everyValueIsBigint
+everyValueNotBigint
+someValueIsBigint
+someValueNotBigint
+isBigint64array
+notBigint64array
+everyValueIsBigint64array
+everyValueNotBigint64array
+someValueIsBigint64array
+someValueNotBigint64array
+isBiguint64array
+notBiguint64array
+everyValueIsBiguint64array
+everyValueNotBiguint64array
+someValueIsBiguint64array
+someValueNotBiguint64array
+isBoolean
+notBoolean
+everyValueIsBoolean
+everyValueNotBoolean
+someValueIsBoolean
+someValueNotBoolean
+isDataview
+notDataview
+everyValueIsDataview
+everyValueNotDataview
+someValueIsDataview
+someValueNotDataview
+isDate
+notDate
+everyValueIsDate
+everyValueNotDate
+someValueIsDate
+someValueNotDate
+isError
+notError
+everyValueIsError
+everyValueNotError
+someValueIsError
+someValueNotError
+isFloat32array
+notFloat32array
+everyValueIsFloat32array
+everyValueNotFloat32array
+someValueIsFloat32array
+someValueNotFloat32array
+isFloat64array
+notFloat64array
+everyValueIsFloat64array
+everyValueNotFloat64array
+someValueIsFloat64array
+someValueNotFloat64array
+isFunction
+notFunction
+everyValueIsFunction
+everyValueNotFunction
+someValueIsFunction
+someValueNotFunction
+isGenerator
+notGenerator
+everyValueIsGenerator
+everyValueNotGenerator
+someValueIsGenerator
+someValueNotGenerator
+isGeneratorfunction
+notGeneratorfunction
+everyValueIsGeneratorfunction
+everyValueNotGeneratorfunction
+someValueIsGeneratorfunction
+someValueNotGeneratorfunction
+isInfinity
+notInfinity
+everyValueIsInfinity
+everyValueNotInfinity
+someValueIsInfinity
+someValueNotInfinity
+isInt16array
+notInt16array
+everyValueIsInt16array
+everyValueNotInt16array
+someValueIsInt16array
+someValueNotInt16array
+isInt32array
+notInt32array
+everyValueIsInt32array
+everyValueNotInt32array
+someValueIsInt32array
+someValueNotInt32array
+isInt8array
+notInt8array
+everyValueIsInt8array
+everyValueNotInt8array
+someValueIsInt8array
+someValueNotInt8array
+isInternal
+notInternal
+everyValueIsInternal
+everyValueNotInternal
+someValueIsInternal
+someValueNotInternal
+isMap
+notMap
+everyValueIsMap
+everyValueNotMap
+someValueIsMap
+someValueNotMap
+isMapiterator
+notMapiterator
+everyValueIsMapiterator
+everyValueNotMapiterator
+someValueIsMapiterator
+someValueNotMapiterator
+isModule
+notModule
+everyValueIsModule
+everyValueNotModule
+someValueIsModule
+someValueNotModule
+isModulenamespaceobject
+notModulenamespaceobject
+everyValueIsModulenamespaceobject
+everyValueNotModulenamespaceobject
+someValueIsModulenamespaceobject
+someValueNotModulenamespaceobject
+isNan
+notNan
+everyValueIsNan
+everyValueNotNan
+someValueIsNan
+someValueNotNan
+isNull
+notNull
+everyValueIsNull
+everyValueNotNull
+someValueIsNull
+someValueNotNull
+isNumber
+notNumber
+everyValueIsNumber
+everyValueNotNumber
+someValueIsNumber
+someValueNotNumber
+isObject
+notObject
+everyValueIsObject
+everyValueNotObject
+someValueIsObject
+someValueNotObject
+isPromise
+notPromise
+everyValueIsPromise
+everyValueNotPromise
+someValueIsPromise
+someValueNotPromise
+isProxy
+notProxy
+everyValueIsProxy
+everyValueNotProxy
+someValueIsProxy
+someValueNotProxy
+isRegexp
+notRegexp
+everyValueIsRegexp
+everyValueNotRegexp
+someValueIsRegexp
+someValueNotRegexp
+isSet
+notSet
+everyValueIsSet
+everyValueNotSet
+someValueIsSet
+someValueNotSet
+isSetiterator
+notSetiterator
+everyValueIsSetiterator
+everyValueNotSetiterator
+someValueIsSetiterator
+someValueNotSetiterator
+isString
+notString
+everyValueIsString
+everyValueNotString
+someValueIsString
+someValueNotString
+isStringiterator
+notStringiterator
+everyValueIsStringiterator
+everyValueNotStringiterator
+someValueIsStringiterator
+someValueNotStringiterator
+isSymbol
+notSymbol
+everyValueIsSymbol
+everyValueNotSymbol
+someValueIsSymbol
+someValueNotSymbol
+isTypedarray
+notTypedarray
+everyValueIsTypedarray
+everyValueNotTypedarray
+someValueIsTypedarray
+someValueNotTypedarray
+isUint16array
+notUint16array
+everyValueIsUint16array
+everyValueNotUint16array
+someValueIsUint16array
+someValueNotUint16array
+isUint32array
+notUint32array
+everyValueIsUint32array
+everyValueNotUint32array
+someValueIsUint32array
+someValueNotUint32array
+isUint8array
+notUint8array
+everyValueIsUint8array
+everyValueNotUint8array
+someValueIsUint8array
+someValueNotUint8array
+isUint8clampedarray
+notUint8clampedarray
+everyValueIsUint8clampedarray
+everyValueNotUint8clampedarray
+someValueIsUint8clampedarray
+someValueNotUint8clampedarray
+isUndefined
+notUndefined
+everyValueIsUndefined
+everyValueNotUndefined
+someValueIsUndefined
+someValueNotUndefined
+isWeakmap
+notWeakmap
+everyValueIsWeakmap
+everyValueNotWeakmap
+someValueIsWeakmap
+someValueNotWeakmap
+isWeakset
+notWeakset
+everyValueIsWeakset
+everyValueNotWeakset
+someValueIsWeakset
+someValueNotWeakset
+isEmptyArray
+notEmptyArray
+everyValueIsEmptyArray
+everyValueNotEmptyArray
+someValueIsEmptyArray
+someValueNotEmptyArray
+isEmptyObject
+notEmptyObject
+everyValueIsEmptyObject
+everyValueNotEmptyObject
+someValueIsEmptyObject
+someValueNotEmptyObject
+isEmptyString
+notEmptyString
+everyValueIsEmptyString
+everyValueNotEmptyString
+someValueIsEmptyString
+someValueNotEmptyString
+isEmpty
+notEmpty
+everyValueIsEmpty
+everyValueNotEmpty
+someValueIsEmpty
+someValueNotEmpty
+isBooleanTrue
+notBooleanTrue
+everyValueIsBooleanTrue
+everyValueNotBooleanTrue
+someValueIsBooleanTrue
+someValueNotBooleanTrue
+isBooleanFalse
+notBooleanFalse
+everyValueIsBooleanFalse
+everyValueNotBooleanFalse
+someValueIsBooleanFalse
+someValueNotBooleanFalse
+isNumberZero
+notNumberZero
+everyValueIsNumberZero
+everyValueNotNumberZero
+someValueIsNumberZero
+someValueNotNumberZero
+isNumberPositive
+notNumberPositive
+everyValueIsNumberPositive
+everyValueNotNumberPositive
+someValueIsNumberPositive
+someValueNotNumberPositive
+isNumberNegative
+notNumberNegative
+everyValueIsNumberNegative
+everyValueNotNumberNegative
+someValueIsNumberNegative
+someValueNotNumberNegative
+isNumberMaxSafeInteger
+notNumberMaxSafeInteger
+everyValueIsNumberMaxSafeInteger
+everyValueNotNumberMaxSafeInteger
+someValueIsNumberMaxSafeInteger
+someValueNotNumberMaxSafeInteger
+
+ 
+Set and get the options for the instance.
+setOptions
+getOptions
+
+Check if all values are of the specified type. Returns boolean or array of booleans.
+isTypeof
+notTypeof
+isTypeofValues
+notTypeofValues
+
+---------------------------------------
+
+@example
+  const isString = new TypeOf(1, '2', 3).isString;
+  // isString = false
+```
 
 ## License
 
-This project is licensed under the MPL-2.0 License - see [LICENSE](https://www.mozilla.org/en-US/MPL/2.0/) for details.
+This project is licensed under the Mozilla Public License 2.0 - see the [LICENSE](LICENSE) file for details.
 
