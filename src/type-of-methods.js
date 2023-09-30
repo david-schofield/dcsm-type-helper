@@ -62,7 +62,7 @@ class TypeOfMethods extends TypeOfHelper {
           checkFn = typeOfHelper.isTypeofValues(type).includes(true);
         }
         if (useCase === 'someValueNot') {
-          checkFn = typeOfHelper.notTypeofValues(type).includes(false);
+          checkFn = typeOfHelper.notTypeofValues(type).includes(true);
         }
 
         // If checkFn is undefined, then the useCase argument is not one of the allowed values.
