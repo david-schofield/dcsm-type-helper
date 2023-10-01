@@ -1,15 +1,11 @@
-// TODO: Add declarations for the new any and all classes
-
 // Project: dcsm-type-helper
 declare module 'dcsm-type-helper' {
-  /**
-   * Options for configuring the behavior of the TypeHelper class.
-   */
-  interface TypeHelperOptions {
+
+  export interface TypeHelperOptions {
     /**
      * Whether to use pretty type names in the output.
      */
-    enableCapitalizedTypeNames?: boolean;
+    //enableCapitalizedTypeNames?: boolean;
 
     /**
      * Whether to disable throwing errors
@@ -18,52 +14,53 @@ declare module 'dcsm-type-helper' {
   }
 
   /**
-   * A utility class for checking the types of values.
+   * Returns the type of the given values as a string or an array of strings.
+   * @param {...*} valuesToCheck - The values to check the type of.
+   * @returns {(string|string[]|boolean|boolean[])}
    */
-  declare class TypeHelper {
-    /**
-     * Creates a new instance of the TypeHelper class.
-     * @param values - The values to check the types of.
-     */
-    constructor(...values: unknown[]);
+  export function getTypeof(...valuesToCheck: any[]): string | string[] | boolean | boolean[];
 
-    /**
-     * Gets the type of the values passed to the constructor.
-     * @param options - Options for configuring the output.
-     * @returns The type of the values, or an array of types if multiple values were passed.
-     */
-    getType(options?: TypeHelperOptions): string | string[];
+  /**
+   * Returns the type of the given values as a string or an array of strings with the first letter capitalized.
+   * @param {...*} valuesToCheck - The values to check the type of.
+   * @returns {(string|string[]|boolean|boolean[])}
+   */
+  export function getTypeOfPretty(...valuesToCheck: any[]): string | string[] | boolean | boolean[];
 
-    /**
-     * Checks whether the type of the values matches the specified type.
-     * @param type - The type to check against.
-     * @param options - Options for configuring the type checking.
-     * @returns True if the type matches, false otherwise.
-     */
-    isType(type: string, options?: TypeHelperOptions): boolean | undefined;
+  /**
+   * Returns a TypeOf instance.
+   * @param {...*} valuesToCheck - The values to check the type of.
+   * @returns {TypeOf}
+   */
+  export function typeOf(...valuesToCheck: any[]): TypeOf;
 
-    /**
-     * Checks whether the type of the values does not match the specified type.
-     * @param type - The type to check against.
-     * @param options - Options for configuring the type checking.
-     * @returns True if the type does not match, false otherwise.
-     */
-    isNotType(type: string, options?: TypeHelperOptions): boolean | undefined;
+  /**
+   * Returns a TypeOf instance with error throwing disabled.
+   * @param {...*} valuesToCheck - The values to check the type of.
+   * @returns {TypeOf}
+   */
+  export function typeOfSilent(...valuesToCheck: any[]): TypeOf;
+
+  export class TypeOf {
+    constructor(...valuesToCheck: any[]);
+    getTypeof(options?: TypeHelperOptions & { enableCapitalizedTypeNames?: boolean }): string | string[];
+    isTypeof(...valuesToCheck: any[], options?: TypeHelperOptions): boolean;
+    isTypeofValues(...valuesToCheck: any[], options?: TypeHelperOptions): boolean;
+    notTypeof(...valuesToCheck: any[], options?: TypeHelperOptions): boolean;
+    notTypeofValues(...valuesToCheck: any[], options?: TypeHelperOptions): boolean;
+    getOptions(): TypeHelperOptions;
+    setOptions(options?: TypeHelperOptions & { enableCapitalizedTypeNames?: boolean }): void;
+    static getTypes(): object;
   }
 
   /**
-   * Creates a new instance of the TypeHelper class.
-   * @param values - The values to check the types of.
-   * @returns A new instance of the TypeHelper class.
+   * Console logs the help for the TypeOf class.
+   * @function
+   * @returns {string}
    */
-  declare function typeHelper(...values: unknown[]): TypeHelper;
+  export function typeOfHelp(): string;
+
+  export default typeOfHelp;
 
 
-  export class TypeHelper {
-    constructor(...values: unknown[]);
-    getType(options?: TypeHelperOptions): string | string[];
-    isType(type: string, options?: TypeHelperOptions): boolean | undefined;
-    isNotType(type: string, options?: TypeHelperOptions): boolean | undefined;
-  }
-  export default typeHelper;
 }
