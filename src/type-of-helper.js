@@ -43,7 +43,7 @@ class TypeOfHelper {
    * @param {...*} valuesToCheck - The values to check the type of.
    */
   constructor(...valuesToCheck) {
-    if (valuesToCheck.length === 0) {
+    if (arguments.length === 0) {
       valuesToCheck = [];
     }
     this.#valuesToCheck = valuesToCheck;
@@ -114,11 +114,13 @@ class TypeOfHelper {
       return undefined;
     }
 
-    const typeOfValues = Array.from(this.#valuesToCheck, (valueToCheck) => {
-      if (options.enableCapitalizedTypeNames === true) {
-        return this.#typeOfValue(valueToCheck);
+    const typeOfValues = [];
+    this.#valuesToCheck.forEach((valueToCheck) => {
+      if (this.#options.enableCapitalizedTypeNames === true) {
+        typeOfValues.push(this.#typeOfValue(valueToCheck));
+      } else {
+        typeOfValues.push(this.#typeOfValue(valueToCheck).toLowerCase());
       }
-      return this.#typeOfValue(valueToCheck).toLowerCase();
     });
 
     if ((typeOfValues.includes('unknown') || typeOfValues.includes('Unknown')) === true) {
@@ -145,20 +147,26 @@ class TypeOfHelper {
       this.#handleError(`${this.#errorMessages.invalidTypeToCheck} Received: ${typeToCheck}`, 'InvalidTypeToCheckError');
       return undefined;
     }
+
     typeToCheck = typeToCheck.toLowerCase();
+
     const typeOfValues = this.getTypeof(options);
+    const isValuesResult = [];
     if (typeOfValues === undefined) {
       return undefined;
     }
     //return Array.isArray(typeOfValues) ? typeOfValues.every((type) => type.toLowerCase() === typeToCheck) : typeOfValues.toLowerCase() === typeToCheck;
     if (typeof typeOfValues === 'string') {
       // A concice way of doing this it just to return [typeOfValues.toLowerCase() === typeToCheck].
-      const returnAsArray = [];
-      returnAsArray.push(typeOfValues.toLowerCase() === typeToCheck);
-      return returnAsArray;
+      isValuesResult.push(typeOfValues.toLowerCase() === typeToCheck);
+      return isValuesResult
     }
-    // typeOfValues is an array. Return an array of booleans.
-    return typeOfValues.map((type) => type.toLowerCase() === typeToCheck);
+
+    typeOfValues.forEach((typeOfValue) => {
+      isValuesResult.push(typeOfValue.toLowerCase() === typeToCheck);
+    });
+
+    return isValuesResult;
   }
 
   /**

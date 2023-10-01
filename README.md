@@ -3,9 +3,7 @@
 [![npm version](https://badge.fury.io/js/dcsm-type-helper.svg)](https://badge.fury.io/js/dcsm-type-helper)
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
-`dcsm-type-helper` is a JavaScript library that provides a `TypeOf` class and a `getTypeof` function for checking the types of values. The `TypeOf` class allows you to create an instance with multiple values and options, while the `getTypeof` function allows you to check the type of a single value or multiple values at once.
-
-A vanilla JavaScript library for checking the type of variables in a more robust and accurate way than the typeof operator. It can be used to get the type of one or more values and check if one or more values are of a specified type or not. 
+A vanilla JavaScript library for checking the type of variables in a more robust and accurate way than the typeof operator.
 
 ## Features
 
@@ -102,22 +100,15 @@ typeOfHelp();
 
 ### TypeOf
 
-The `TypeOf` class allows you to create an instance with multiple values and options. Here's an example:
+The `TypeOf` class allows you to create an instance with multiple values.
 
 ```javascript
 const typeOfInstance = new TypeOf("hello", 42, true);
 ```
 
-You can then use the `getTypeof` function to check the type of a value:
-
-```javascript
-const stringType = getTypeof(typeOfInstance, "hello");
-console.log(stringType); // "string"
-```
-
 ### getTypeof
 
-The `getTypeof` function allows you to check the type of a single value or multiple values at once. Here's an example:
+The `getTypeof` function allows you to get the type of a single value or multiple values at once.
 
 ```javascript
 const myString = "hello";
@@ -134,58 +125,66 @@ console.log(types); // ["string", "number", "boolean"]
 # API Reference
 
 ## TypeOf [class]
-#### `constructor(...values: any[], options?: TypeOfOptions): TypeOf`
+#### `constructor(...values: any[]): TypeOf`
 
 Creates a new instance of the `TypeOf` class with the specified values and options.
 
 - `values`: The values to check the type of.
-- `options`: An optional object with the following properties:
-  - `enableCapitalizedTypeNames`: A boolean value indicating whether to use capitalized type names. If `true`, the `TypeOf` class will use capitalized type names (e.g. `String` instead of `string`). If `false` (the default), the `TypeOf` class will use lowercase type names.
-  - `disableThrowErrors`: A boolean value indicating whether to disable throwing errors. If `true`, the `TypeOf` class will not throw errors when invalid options are provided. If `false` (the default), the `TypeOf` class will throw errors when invalid options are provided.
 
-## TypeOf.setOptions [setter]
+Throws an error if no values are provided to the constructor. With error name `InvalidValuesToCheckError` and message `No values to check were provided!`.
+
+## TypeOf - setOptions [setter]
 #### `setOptions(options: TypeOfOptions): void`
 
 Sets the options for an instance of the `TypeOf` class.
 
-- `options`: An object with the same properties as the `options` object passed to the constructor.
+``` javascript
+TypeOfOptions = {
+  enableCapitalizedTypeNames?: boolean;
+  disableThrowErrors?: boolean;
+}
+```
 
-GitHub Copilot: The `enableCapitalizedTypeNames` option in the `TypeOf` and `TypeOfHelper` classes is used to determine whether the type names returned by the `getTypeof` method should be capitalized or not. 
+`options`: An optional object with the following properties:
+  - `enableCapitalizedTypeNames`: A boolean value indicating whether to use capitalized type names. If `true`, the `TypeOf` class will return capitalized type names (e.g. `String` instead of `string`). If `false` (the default), the `TypeOf` class will use lowercase type names.
+  - `disableThrowErrors`: A boolean value indicating whether to disable throwing errors. If 
 
 If `enableCapitalizedTypeNames` is set to `true`, the `getTypeof` method will return capitalized type names (e.g. `String` instead of `string`). If `enableCapitalizedTypeNames` is set to `false` (the default), the `getTypeof` method will return lowercase type names.
 
-This option can be useful if you want to standardize the formatting of the type names returned by the `getTypeof` method, or if you prefer capitalized type names for consistency with other parts of your codebase.
+If `disableThrowErrors` is set to true `true`, the `TypeOf` class will not throw errors and instead return `undefined`. It is important to remember that by returning `undefined` instead of throwing errors, the `TypeOf` class will not provide any information on why the error occurred. If `disableThrowErrors` is set to `false` (the default), the `TypeOf` class will throw errors with information on why the error occurred.
 
-GitHub Copilot: The `disableThrowErrors` option in the `TypeOf` and `TypeOfHelper` classes is used to determine whether the classes should throw errors when invalid options are provided. 
+Throws error if `options` is not an object. With error name `InvalidOptionsTypeError` and message `Options must be an object!...`.
+Throws error if `options.enableCapitalizedTypeNames` is not a boolean. With error name `InvalidOptionsError` and message `The options provided are not valid!...`.
+Throws error if `options.disableThrowErrors` is not a boolean. With error name `InvalidOptionsError` and message `The options provided are not valid!...`.
+Throws error if `options.enableCapitalizedTypeNames` is not a boolean. With error name `InvalidOptionsError` and message `The options provided are not valid!...`.
+Throws error if `options.disableThrowErrors` is not a boolean. With error name `InvalidOptionsError` and message `The options provided are not valid!...`.
 
-If `disableThrowErrors` is set to `true`, the classes will not throw errors when invalid options are provided. If `disableThrowErrors` is set to `false` (the default), the classes will throw errors when invalid options are provided.
-
-This option can be useful if you want to disable error handling for some reason, or if you want to handle errors in a custom way. However, it's generally recommended to leave `disableThrowErrors` set to `false` so that errors are thrown when invalid options are provided, as this can help catch bugs and prevent unexpected behavior.
 
 Example:
 
 ```javascript
 const typeOfInstance = new TypeOf("hello", 42, true);
-typeOfInstance.setOptions({ enableCapitalizedTypeNames: true });
+const options = { enableCapitalizedTypeNames: true, disableThrowErrors: true };
+typeOfInstance.setOptions(options);
 ```
 
-## TypeOf.getOptions [getter]
+## TypeOf - getOptions [getter]
 #### `getOptions(): TypeOfOptions`
 
 Gets the options for an instance of the `TypeOf` class.
 
-- Returns an object with the same properties as the `options` object passed to the constructor.
+- Returns an object with the properties `enableCapitalizedTypeNames` and `disableThrowErrors`.
 
-## TypeOf.isTypeof [method]
-#### `isTypeof(type: string): boolean`
+## TypeOf - isTypeof [method]
+#### `isTypeof(type: string, options?: TypeOfOptions): boolean | undefined`
 
 Checks if all values are of the specified type.
 
 - `type`: The type to check the values against.
 - Returns `true` if all values are of the specified type, or `false` if not. If disableThrowErrors is set to `true`, it will return `undefined` instead of throwing an error.
 
-## TypeOf.notTypeof [method]
-#### `notTypeof(type: string): boolean`
+## TypeOf - notTypeof [method]
+#### `notTypeof(type: string, options?: TypeOfOptions): boolean | undefined`
 
 Checks if all values are not of the specified type.
 
@@ -193,8 +192,8 @@ Checks if all values are not of the specified type.
 - Returns `true` if all values are not of the specified type, or `false` if not. If disableThrowErrors is set to `true`, it will return `undefined` instead of throwing an error.
 - This method is the opposite of the `isTypeof` method.
 
-## TypeOf.isTypeofValues [method]
-#### `isTypeofValues(type: string): boolean[]`
+## TypeOf - isTypeofValues [method]
+#### `isTypeofValues(type: string, options?: TypeOfOptions): boolean[] | undefined`
 
 Checks if all values are of the specified type. Returns an array of booleans.
 
@@ -210,8 +209,8 @@ const types = typeOfInstance.isTypeofValues("string");
 console.log(types); // [true, false, false]
 ```
 
-## TypeOf.notTypeofValues [method]
-#### `notTypeofValues(type: string): boolean[]`
+## TypeOf - notTypeofValues [method]
+#### `notTypeofValues(type: string, options?: TypeOfOptions): boolean[] | undefined`
 
 Checks if all values are not of the specified type. Returns an array of booleans.
 
@@ -227,14 +226,10 @@ const types = typeOfInstance.notTypeofValues("string");
 console.log(types); // [false, true, true]
 ```
 
-## TypeOf.getTypeof [method]
-#### `getTypeof(options?: TypeOfOptions): string | string[]`
+## TypeOf - getTypeof [method]
+#### `getTypeof(options?: TypeOfOptions): string | string[] | undefined`
 
 Gets the type of the values as a string or an array of strings.
-
-- `options`: An optional object with the following properties:
-  - `enableCapitalizedTypeNames`: A boolean value indicating whether to use capitalized type names. If `true`, the `TypeOf` class will use capitalized type names (e.g. `String` instead of `string`). If `false` (the default), the `TypeOf` class will use lowercase type names.
-  - `disableThrowErrors`: A boolean value indicating whether to disable throwing errors. If `true`, the `TypeOf` class will not throw errors when invalid options are provided. If `false` (the default), the `TypeOf` class will throw errors when invalid options are provided.
 
 - Returns a string with the type of the value if a single value is passed, or an array of strings with the types of the values if multiple values are passed.
 - Example:
@@ -247,14 +242,14 @@ console.log(types); // ["String", "Number", "Boolean"]
 ```
 
 ## getTypeof [function]
-#### `getTypeof(...values: any[], options?: TypeOfOptions): string | string[]`
+#### `getTypeof(...values: any[]): string | string[]`
 
 Checks the type of a single value or multiple values at once.
 
 - `values`: The values to check the type of.
 
 ## getTypeofPretty [function]
-#### `getTypeofPretty(...values: any[], options?: TypeOfOptions): string | string[]`
+#### `getTypeofPretty(...values: any[]): string | string[]`
 
 Checks the type of a single value or multiple values at once and returns a pretty string.
 
@@ -263,14 +258,14 @@ Checks the type of a single value or multiple values at once and returns a prett
 
 
 ## typeOf [function]
-#### `typeOf(...values: any[], options?: TypeOfOptions): TypeOf`
+#### `typeOf(...values: any[]): TypeOf`
 
 Creates a new instance of the `TypeOf` class with the specified values and options.
 
 - `values`: The values to check the type of.
 
 ## typeOfSilent [function]
-#### `typeOfSilent(...values: any[], options?: TypeOfOptions): TypeOf`
+#### `typeOfSilent(...values: any[]): TypeOf`
 
 Creates a new instance of the `TypeOf` class with the specified values and options.
 

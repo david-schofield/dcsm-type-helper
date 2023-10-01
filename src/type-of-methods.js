@@ -29,29 +29,34 @@ class TypeOfMethods extends TypeOfHelper {
       capitalized
     }]) => {
       useCases.forEach((useCase) => {
-        let checkFn;
         if (['is', 'everyValueIs'].includes(useCase)) {
-          checkFn = typeOfHelper.isTypeof(type);
+          Object.defineProperty(this, `${useCase}${capitalized}`, {
+            get() {
+              return typeOfHelper.isTypeof(type);
+            }
+          });
         }
         if (['not', 'everyValueNot'].includes(useCase)) {
-          checkFn = typeOfHelper.notTypeof(type);
+          Object.defineProperty(this, `${useCase}${capitalized}`, {
+            get() {
+              return typeOfHelper.notTypeof(type);
+            }
+          });
         }
         if (useCase === 'someValueIs') {
-          checkFn = typeOfHelper.isTypeofValues(type).includes(true);
+          Object.defineProperty(this, `${useCase}${capitalized}`, {
+            get() {
+              return typeOfHelper.isTypeofValues(type).includes(true);
+            }
+          });
         }
         if (useCase === 'someValueNot') {
-          checkFn = typeOfHelper.notTypeofValues(type).includes(true);
+          Object.defineProperty(this, `${useCase}${capitalized}`, {
+            get() {
+              return typeOfHelper.notTypeofValues(type).includes(true);
+            }
+          });
         }
-
-        // If checkFn is undefined, then the useCase argument is not one of the allowed values.
-        if (typeof checkFn !== 'boolean') {
-          throw new Error(`The useCase argument must be one of the following: ${useCases.join(', ')}.`);
-        }
-        Object.defineProperty(this, `${useCase}${capitalized}`, {
-          get() {
-            return checkFn;
-          }
-        });
       });
     });
 
@@ -134,7 +139,7 @@ class TypeOfMethods extends TypeOfHelper {
       });
     });
   }
-  
+
 }
 
 /**
@@ -149,8 +154,8 @@ class TypeOfMethods extends TypeOfHelper {
 function help() {
   //const availableMethods = Object.getOwnPropertyNames(new TypeOfMethods(1, 2, 3)).filter((prop) => typeof new TypeOfMethods(1, 2, 3)[prop] === 'boolean');
   const availableMethods = [
-  ...TypeOfHelper.getTypes.capitalized,
-  ...Object.values(new TypeOfMethods(2).helperMethodsList)
+    ...TypeOfHelper.getTypes.capitalized,
+    ...Object.values(new TypeOfMethods(2).helperMethodsList)
   ];
   const useCases = ['is', 'not', 'everyValueIs', 'everyValueNot', 'someValueIs', 'someValueNot'];
   const help = `

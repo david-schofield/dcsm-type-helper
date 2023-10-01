@@ -43,11 +43,11 @@ declare module 'dcsm-type-helper' {
 
   export class TypeOf {
     constructor(...valuesToCheck: any[]);
-    getTypeof(options?: TypeHelperOptions & { enableCapitalizedTypeNames?: boolean }): string | string[];
-    isTypeof(...valuesToCheck: any[], options?: TypeHelperOptions): boolean;
-    isTypeofValues(...valuesToCheck: any[], options?: TypeHelperOptions): boolean;
-    notTypeof(...valuesToCheck: any[], options?: TypeHelperOptions): boolean;
-    notTypeofValues(...valuesToCheck: any[], options?: TypeHelperOptions): boolean;
+    getTypeof(options?: TypeHelperOptions & { enableCapitalizedTypeNames?: boolean }): string | string[] | undefined;
+    isTypeof(...valuesToCheck: any[], options?: TypeHelperOptions): boolean | undefined;
+    isTypeofValues(...valuesToCheck: any[], options?: TypeHelperOptions): boolean[] | undefined;
+    notTypeof(...valuesToCheck: any[], options?: TypeHelperOptions): boolean | undefined;
+    notTypeofValues(...valuesToCheck: any[], options?: TypeHelperOptions): boolean[] | undefined;
     getOptions(): TypeHelperOptions;
     setOptions(options?: TypeHelperOptions & { enableCapitalizedTypeNames?: boolean }): void;
     static getTypes(): object;
