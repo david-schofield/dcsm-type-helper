@@ -131,10 +131,9 @@ const types = getTypeof(myString, myNumber, myBoolean);
 console.log(types); // ["string", "number", "boolean"]
 ```
 
-## API
+# API Reference
 
-### `TypeOf`
-
+## TypeOf [class]
 #### `constructor(...values: any[], options?: TypeOfOptions): TypeOf`
 
 Creates a new instance of the `TypeOf` class with the specified values and options.
@@ -144,6 +143,7 @@ Creates a new instance of the `TypeOf` class with the specified values and optio
   - `enableCapitalizedTypeNames`: A boolean value indicating whether to use capitalized type names. If `true`, the `TypeOf` class will use capitalized type names (e.g. `String` instead of `string`). If `false` (the default), the `TypeOf` class will use lowercase type names.
   - `disableThrowErrors`: A boolean value indicating whether to disable throwing errors. If `true`, the `TypeOf` class will not throw errors when invalid options are provided. If `false` (the default), the `TypeOf` class will throw errors when invalid options are provided.
 
+## TypeOf.setOptions [setter]
 #### `setOptions(options: TypeOfOptions): void`
 
 Sets the options for an instance of the `TypeOf` class.
@@ -169,386 +169,204 @@ const typeOfInstance = new TypeOf("hello", 42, true);
 typeOfInstance.setOptions({ enableCapitalizedTypeNames: true });
 ```
 
+## TypeOf.getOptions [getter]
 #### `getOptions(): TypeOfOptions`
 
 Gets the options for an instance of the `TypeOf` class.
 
 - Returns an object with the same properties as the `options` object passed to the constructor.
 
-### `getTypeof`
+## TypeOf.isTypeof [method]
+#### `isTypeof(type: string): boolean`
 
-#### `getTypeof(...values: any[]): string | string[]`
+Checks if all values are of the specified type.
+
+- `type`: The type to check the values against.
+- Returns `true` if all values are of the specified type, or `false` if not. If disableThrowErrors is set to `true`, it will return `undefined` instead of throwing an error.
+
+## TypeOf.notTypeof [method]
+#### `notTypeof(type: string): boolean`
+
+Checks if all values are not of the specified type.
+
+- `type`: The type to check the values against.
+- Returns `true` if all values are not of the specified type, or `false` if not. If disableThrowErrors is set to `true`, it will return `undefined` instead of throwing an error.
+- This method is the opposite of the `isTypeof` method.
+
+## TypeOf.isTypeofValues [method]
+#### `isTypeofValues(type: string): boolean[]`
+
+Checks if all values are of the specified type. Returns an array of booleans.
+
+- `type`: The type to check the values against.
+- Returns an array of booleans with the same length as the number of values passed to the constructor. Each boolean indicates whether the corresponding value is of the specified type or not. If disableThrowErrors is set to `true`, it will return `undefined` instead of throwing an error.
+- This method is the same as the `isTypeof` method, except that it returns an array of booleans instead of a single boolean.
+- This method is useful if you want to check the type of multiple values at once.
+- Example:
+
+```javascript
+const typeOfInstance = new TypeOf("hello", 42, true);
+const types = typeOfInstance.isTypeofValues("string");
+console.log(types); // [true, false, false]
+```
+
+## TypeOf.notTypeofValues [method]
+#### `notTypeofValues(type: string): boolean[]`
+
+Checks if all values are not of the specified type. Returns an array of booleans.
+
+- `type`: The type to check the values against.
+- Returns an array of booleans with the same length as the number of values passed to the constructor. Each boolean indicates whether the corresponding value is not of the specified type or not. If disableThrowErrors is set to `true`, it will return `undefined` instead of throwing an error.
+- This method is the same as the `notTypeof` method, except that it returns an array of booleans instead of a single boolean.
+- This method is useful if you want to check the type of multiple values at once.
+- Example:
+
+```javascript
+const typeOfInstance = new TypeOf("hello", 42, true);
+const types = typeOfInstance.notTypeofValues("string");
+console.log(types); // [false, true, true]
+```
+
+## TypeOf.getTypeof [method]
+#### `getTypeof(options?: TypeOfOptions): string | string[]`
+
+Gets the type of the values as a string or an array of strings.
+
+- `options`: An optional object with the following properties:
+  - `enableCapitalizedTypeNames`: A boolean value indicating whether to use capitalized type names. If `true`, the `TypeOf` class will use capitalized type names (e.g. `String` instead of `string`). If `false` (the default), the `TypeOf` class will use lowercase type names.
+  - `disableThrowErrors`: A boolean value indicating whether to disable throwing errors. If `true`, the `TypeOf` class will not throw errors when invalid options are provided. If `false` (the default), the `TypeOf` class will throw errors when invalid options are provided.
+
+- Returns a string with the type of the value if a single value is passed, or an array of strings with the types of the values if multiple values are passed.
+- Example:
+
+```javascript
+const typeOfInstance = new TypeOf("hello", 42, true);
+const options = { enableCapitalizedTypeNames: true, disableThrowErrors: true };
+const types = typeOfInstance.getTypeof(options);
+console.log(types); // ["String", "Number", "Boolean"]
+```
+
+## getTypeof [function]
+#### `getTypeof(...values: any[], options?: TypeOfOptions): string | string[]`
 
 Checks the type of a single value or multiple values at once.
 
 - `values`: The values to check the type of.
 
-- Returns a string with the type of the value if a single value is passed, or an array of strings with the types of the values if multiple values are passed.
+## getTypeofPretty [function]
+#### `getTypeofPretty(...values: any[], options?: TypeOfOptions): string | string[]`
+
+Checks the type of a single value or multiple values at once and returns a pretty string.
+
+- `values`: The values to check the type of.
+- same as getTypeof but returns a pretty string
 
 
-### `typeOfHelp(): string`
+## typeOf [function]
+#### `typeOf(...values: any[], options?: TypeOfOptions): TypeOf`
+
+Creates a new instance of the `TypeOf` class with the specified values and options.
+
+- `values`: The values to check the type of.
+
+## typeOfSilent [function]
+#### `typeOfSilent(...values: any[], options?: TypeOfOptions): TypeOf`
+
+Creates a new instance of the `TypeOf` class with the specified values and options.
+
+- `values`: The values to check the type of.
+- same as typeOf but does not throw errors
+
+## typeOfHelp [function]
+#### `typeOfHelp(): string`
 
 Console logs the help for the `TypeOf` class.
 
-- Returns the following string with the help information.
-
+Returns the following string with the help information:
 
 ```
-Evaluate all the values of the instance. Returns boolean.
+These are the available getter methods that return a boolean value for the given use case for the given type.
+Each method name has a corresponding method for each use case as a prefix to the method name.
+The use cases are: is, not, everyValueIs, everyValueNot, someValueIs, someValueNot.
+ 
+Arguments
+Array
+Arraybuffer
+Arrayiterator
+Asyncfunction
+Asyncgenerator
+Asyncgeneratorfunction
+Bigint
+Bigint64array
+Biguint64array
+Boolean
+Dataview
+Date
+Error
+Float32array
+Float64array
+Function
+Generator
+Generatorfunction
+Infinity
+Int16array
+Int32array
+Int8array
+Internal
+Map
+Mapiterator
+Module
+Modulenamespaceobject
+Nan
+Null
+Number
+Object
+Promise
+Proxy
+Regexp
+Set
+Setiterator
+String
+Stringiterator
+Symbol
+Typedarray
+Uint16array
+Uint32array
+Uint8array
+Uint8clampedarray
+Undefined
+Weakmap
+Weakset
+EmptyArray
+EmptyObject
+EmptyString
+Empty
+BooleanTrue
+BooleanFalse
+NumberZero
+NumberPositive
+NumberNegative
+NumberMaxSafeInteger
 
-isArguments
-notArguments
-everyValueIsArguments
-everyValueNotArguments
-someValueIsArguments
-someValueNotArguments
-isArray
-notArray
-everyValueIsArray
-everyValueNotArray
-someValueIsArray
-someValueNotArray
-isArraybuffer
-notArraybuffer
-everyValueIsArraybuffer
-everyValueNotArraybuffer
-someValueIsArraybuffer
-someValueNotArraybuffer
-isArrayiterator
-notArrayiterator
-everyValueIsArrayiterator
-everyValueNotArrayiterator
-someValueIsArrayiterator
-someValueNotArrayiterator
-isAsyncfunction
-notAsyncfunction
-everyValueIsAsyncfunction
-everyValueNotAsyncfunction
-someValueIsAsyncfunction
-someValueNotAsyncfunction
-isAsyncgenerator
-notAsyncgenerator
-everyValueIsAsyncgenerator
-everyValueNotAsyncgenerator
-someValueIsAsyncgenerator
-someValueNotAsyncgenerator
-isAsyncgeneratorfunction
-notAsyncgeneratorfunction
-everyValueIsAsyncgeneratorfunction
-everyValueNotAsyncgeneratorfunction
-someValueIsAsyncgeneratorfunction
-someValueNotAsyncgeneratorfunction
-isBigint
-notBigint
-everyValueIsBigint
-everyValueNotBigint
-someValueIsBigint
-someValueNotBigint
-isBigint64array
-notBigint64array
-everyValueIsBigint64array
-everyValueNotBigint64array
-someValueIsBigint64array
-someValueNotBigint64array
-isBiguint64array
-notBiguint64array
-everyValueIsBiguint64array
-everyValueNotBiguint64array
-someValueIsBiguint64array
-someValueNotBiguint64array
-isBoolean
-notBoolean
-everyValueIsBoolean
-everyValueNotBoolean
-someValueIsBoolean
-someValueNotBoolean
-isDataview
-notDataview
-everyValueIsDataview
-everyValueNotDataview
-someValueIsDataview
-someValueNotDataview
-isDate
-notDate
-everyValueIsDate
-everyValueNotDate
-someValueIsDate
-someValueNotDate
-isError
-notError
-everyValueIsError
-everyValueNotError
-someValueIsError
-someValueNotError
-isFloat32array
-notFloat32array
-everyValueIsFloat32array
-everyValueNotFloat32array
-someValueIsFloat32array
-someValueNotFloat32array
-isFloat64array
-notFloat64array
-everyValueIsFloat64array
-everyValueNotFloat64array
-someValueIsFloat64array
-someValueNotFloat64array
-isFunction
-notFunction
-everyValueIsFunction
-everyValueNotFunction
-someValueIsFunction
-someValueNotFunction
-isGenerator
-notGenerator
-everyValueIsGenerator
-everyValueNotGenerator
-someValueIsGenerator
-someValueNotGenerator
-isGeneratorfunction
-notGeneratorfunction
-everyValueIsGeneratorfunction
-everyValueNotGeneratorfunction
-someValueIsGeneratorfunction
-someValueNotGeneratorfunction
-isInfinity
-notInfinity
-everyValueIsInfinity
-everyValueNotInfinity
-someValueIsInfinity
-someValueNotInfinity
-isInt16array
-notInt16array
-everyValueIsInt16array
-everyValueNotInt16array
-someValueIsInt16array
-someValueNotInt16array
-isInt32array
-notInt32array
-everyValueIsInt32array
-everyValueNotInt32array
-someValueIsInt32array
-someValueNotInt32array
-isInt8array
-notInt8array
-everyValueIsInt8array
-everyValueNotInt8array
-someValueIsInt8array
-someValueNotInt8array
-isInternal
-notInternal
-everyValueIsInternal
-everyValueNotInternal
-someValueIsInternal
-someValueNotInternal
-isMap
-notMap
-everyValueIsMap
-everyValueNotMap
-someValueIsMap
-someValueNotMap
-isMapiterator
-notMapiterator
-everyValueIsMapiterator
-everyValueNotMapiterator
-someValueIsMapiterator
-someValueNotMapiterator
-isModule
-notModule
-everyValueIsModule
-everyValueNotModule
-someValueIsModule
-someValueNotModule
-isModulenamespaceobject
-notModulenamespaceobject
-everyValueIsModulenamespaceobject
-everyValueNotModulenamespaceobject
-someValueIsModulenamespaceobject
-someValueNotModulenamespaceobject
-isNan
-notNan
-everyValueIsNan
-everyValueNotNan
-someValueIsNan
-someValueNotNan
-isNull
-notNull
-everyValueIsNull
-everyValueNotNull
-someValueIsNull
-someValueNotNull
-isNumber
-notNumber
-everyValueIsNumber
-everyValueNotNumber
-someValueIsNumber
-someValueNotNumber
-isObject
-notObject
-everyValueIsObject
-everyValueNotObject
-someValueIsObject
-someValueNotObject
-isPromise
-notPromise
-everyValueIsPromise
-everyValueNotPromise
-someValueIsPromise
-someValueNotPromise
-isProxy
-notProxy
-everyValueIsProxy
-everyValueNotProxy
-someValueIsProxy
-someValueNotProxy
-isRegexp
-notRegexp
-everyValueIsRegexp
-everyValueNotRegexp
-someValueIsRegexp
-someValueNotRegexp
-isSet
-notSet
-everyValueIsSet
-everyValueNotSet
-someValueIsSet
-someValueNotSet
-isSetiterator
-notSetiterator
-everyValueIsSetiterator
-everyValueNotSetiterator
-someValueIsSetiterator
-someValueNotSetiterator
-isString
-notString
-everyValueIsString
-everyValueNotString
-someValueIsString
-someValueNotString
-isStringiterator
-notStringiterator
-everyValueIsStringiterator
-everyValueNotStringiterator
-someValueIsStringiterator
-someValueNotStringiterator
-isSymbol
-notSymbol
-everyValueIsSymbol
-everyValueNotSymbol
-someValueIsSymbol
-someValueNotSymbol
-isTypedarray
-notTypedarray
-everyValueIsTypedarray
-everyValueNotTypedarray
-someValueIsTypedarray
-someValueNotTypedarray
-isUint16array
-notUint16array
-everyValueIsUint16array
-everyValueNotUint16array
-someValueIsUint16array
-someValueNotUint16array
-isUint32array
-notUint32array
-everyValueIsUint32array
-everyValueNotUint32array
-someValueIsUint32array
-someValueNotUint32array
-isUint8array
-notUint8array
-everyValueIsUint8array
-everyValueNotUint8array
-someValueIsUint8array
-someValueNotUint8array
-isUint8clampedarray
-notUint8clampedarray
-everyValueIsUint8clampedarray
-everyValueNotUint8clampedarray
-someValueIsUint8clampedarray
-someValueNotUint8clampedarray
-isUndefined
-notUndefined
-everyValueIsUndefined
-everyValueNotUndefined
-someValueIsUndefined
-someValueNotUndefined
-isWeakmap
-notWeakmap
-everyValueIsWeakmap
-everyValueNotWeakmap
-someValueIsWeakmap
-someValueNotWeakmap
-isWeakset
-notWeakset
-everyValueIsWeakset
-everyValueNotWeakset
-someValueIsWeakset
-someValueNotWeakset
-isEmptyArray
-notEmptyArray
-everyValueIsEmptyArray
-everyValueNotEmptyArray
-someValueIsEmptyArray
-someValueNotEmptyArray
-isEmptyObject
-notEmptyObject
-everyValueIsEmptyObject
-everyValueNotEmptyObject
-someValueIsEmptyObject
-someValueNotEmptyObject
-isEmptyString
-notEmptyString
-everyValueIsEmptyString
-everyValueNotEmptyString
-someValueIsEmptyString
-someValueNotEmptyString
-isEmpty
-notEmpty
-everyValueIsEmpty
-everyValueNotEmpty
-someValueIsEmpty
-someValueNotEmpty
-isBooleanTrue
-notBooleanTrue
-everyValueIsBooleanTrue
-everyValueNotBooleanTrue
-someValueIsBooleanTrue
-someValueNotBooleanTrue
-isBooleanFalse
-notBooleanFalse
-everyValueIsBooleanFalse
-everyValueNotBooleanFalse
-someValueIsBooleanFalse
-someValueNotBooleanFalse
-isNumberZero
-notNumberZero
-everyValueIsNumberZero
-everyValueNotNumberZero
-someValueIsNumberZero
-someValueNotNumberZero
-isNumberPositive
-notNumberPositive
-everyValueIsNumberPositive
-everyValueNotNumberPositive
-someValueIsNumberPositive
-someValueNotNumberPositive
-isNumberNegative
-notNumberNegative
-everyValueIsNumberNegative
-everyValueNotNumberNegative
-someValueIsNumberNegative
-someValueNotNumberNegative
-isNumberMaxSafeInteger
-notNumberMaxSafeInteger
-everyValueIsNumberMaxSafeInteger
-everyValueNotNumberMaxSafeInteger
-someValueIsNumberMaxSafeInteger
-someValueNotNumberMaxSafeInteger
+@examples
+// For the method name 'String' the following methods are available:
+// isString, notString, everyValueIsString, everyValueNotString, someValueIsString, someValueNotString
+const typeOf = new TypeOf(1, '2', 3);
+console.log(
+  typeOf.isString,            // false  - because not all values are strings
+  typeOf.notString,           // true   - because not all values are strings. Same as !typeOf.isString
+  typeOf.everyValueIsString,  // false  - same as typeOf.isString
+  typeOf.everyValueNotString, // true   - same as typeOf.notString
+  typeOf.someValueIsString,   // true   - because at least one value is a string
+  typeOf.someValueNotString); // true   - because at least one value is a string. Same as !typeOf.someValueIsString
 
+---------------------------------------
  
 Set and get the options for the instance.
 setOptions
 getOptions
+
+---------------------------------------
 
 Check if all values are of the specified type. Returns boolean or array of booleans.
 isTypeof
@@ -558,9 +376,17 @@ notTypeofValues
 
 ---------------------------------------
 
-@example
-  const isString = new TypeOf(1, '2', 3).isString;
-  // isString = false
+Get the type of the values as a string or an array of strings.
+getTypeof(options); 
+// options is an optional object with the following properties:
+// enableCapitalizedTypeNames: boolean - If true, the first letter of the type name will be capitalized.
+// disableThrowErrors: boolean - If true, errors will not be thrown.
+
+@examples
+const typeOf = new TypeOf(1, '2', {}, [], new RegExp());
+const options = {enableCapitalizedTypeNames: true, disableThrowErrors: true};
+typeOf.getTypeof(options); // ['Number', 'String', 'Object', 'Array', 'RegExp']
+
 ```
 
 ## License
