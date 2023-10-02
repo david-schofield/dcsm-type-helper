@@ -25,6 +25,12 @@ A vanilla JavaScript library for checking the type of variables in a more robust
   - [getTypeof](#gettypeof)
   - [typeOfHelp](#typeofhelp)
 - [API](#api)
+  - [TypeOf](#typeof)
+  - [getTypeof](#gettypeof)
+  - [getTypeofPretty](#gettypeofpretty)
+  - [typeOf](#typeof)
+  - [typeOfSilent](#typeofsilent)
+  - [typeOfHelp](#typeofhelp)
 - [License](#license)
 
 ## Installation
@@ -83,10 +89,12 @@ console.log(types); // ["string", "number", "boolean"]
 ```javascript
 import { TypeOf } from "dcsm-type-helper";
 
-const typeOfInstance = new TypeOf("hello", 42, true, {
+const typeOfInstance = new TypeOf("hello", 42, true)
+const options = {
   enableCapitalizedTypeNames: true,
   disableThrowErrors: true,
-});
+};
+typeOfInstance.setOptions(options);
 console.log(typeOfInstance.getTypeof());
 ```
 
@@ -96,14 +104,6 @@ console.log(typeOfInstance.getTypeof());
 import { typeOfHelp } from "dcsm-type-helper";
 
 typeOfHelp();
-```
-
-### TypeOf
-
-The `TypeOf` class allows you to create an instance with multiple values.
-
-```javascript
-const typeOfInstance = new TypeOf("hello", 42, true);
 ```
 
 ### getTypeof
