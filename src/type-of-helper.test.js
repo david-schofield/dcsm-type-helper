@@ -41,87 +41,87 @@ describe('TypeOfHelper', () => {
   });
 
 
-  describe('getTypeof', () => {
+  describe('getTypeOf', () => {
     it('should return the type of the values to check', () => {
       const helper = new TypeOfHelper('hello', 123, true);
-      expect(helper.getTypeof()).toEqual(['string', 'number', 'boolean']);
+      expect(helper.getTypeOf()).toEqual(['string', 'number', 'boolean']);
     });
 
     it('should return capitalized type names if enablePrettyTypeNames is true', () => {
       const helper = new TypeOfHelper('hello', 123, true);
-      expect(helper.getTypeof({
+      expect(helper.getTypeOf({
         enableCapitalizedTypeNames: true
       })).toEqual(['String', 'Number', 'Boolean']);
     });
 
     it('should throw an error if there are no values to check', () => {
       const helper = new TypeOfHelper();
-      expect(() => helper.getTypeof()).toThrow('No values to check were provided!');
+      expect(() => helper.getTypeOf()).toThrow('No values to check were provided!');
     });
 
     it('should not throw an error if disableThrowErrors is true', () => {
       const helper = new TypeOfHelper(() => {});
-      expect(helper.getTypeof({
+      expect(helper.getTypeOf({
         disableThrowErrors: true
       })).toEqual('function');
     });
 
     it('should return the type of the value', () => {
       const helper = new TypeOfHelper('test');
-      expect(helper.getTypeof()).toEqual('string');
+      expect(helper.getTypeOf()).toEqual('string');
     });
 
     it('should throw a NoValuesToCheckError if there are no values to check', () => {
       const helper = new TypeOfHelper();
-      expect(() => helper.getTypeof()).toThrowError('No values to check were provided!');
+      expect(() => helper.getTypeOf()).toThrowError('No values to check were provided!');
     });
 
   });
 
 
-  describe('isTypeofValues', () => {
+  describe('isTypeOfValues', () => {
     it('should return an array of booleans indicating whether each value in the valuesToCheck array matches the given typeToCheck', () => {
       const helper = new TypeOfHelper('test', 123, true);
-      expect(helper.isTypeofValues('string')).toEqual([true, false, false]);
+      expect(helper.isTypeOfValues('string')).toEqual([true, false, false]);
     });
   });
 
 
-  describe('isTypeof', () => {
+  describe('isTypeOf', () => {
     it('should return true if the value matches the type', () => {
       const helper = new TypeOfHelper('test');
-      expect(helper.isTypeof('string')).toBe(true);
+      expect(helper.isTypeOf('string')).toBe(true);
     });
 
     it('should return false if the value does not match the type', () => {
       const helper = new TypeOfHelper(123);
-      expect(helper.isTypeof('string')).toBe(false);
+      expect(helper.isTypeOf('string')).toBe(false);
     });
   });
 
 
-  describe('notTypeofValues', () => {
+  describe('notTypeOfValues', () => {
     it('should return an array of booleans indicating whether the values in the instance are not of the specified type', () => {
       const helper = new TypeOfHelper('test', 123, true);
-      expect(helper.notTypeofValues('string')).toEqual([false, true, true]);
+      expect(helper.notTypeOfValues('string')).toEqual([false, true, true]);
     });
   });
 
 
-  describe('notTypeof', () => {
+  describe('notTypeOf', () => {
     it('should return true if the type of the value is not equal to the specified type', () => {
       const helper = new TypeOfHelper(123);
-      expect(helper.notTypeof('string')).toBe(true);
+      expect(helper.notTypeOf('string')).toBe(true);
     });
 
     it('should return false if the type of the value is equal to the specified type', () => {
       const helper = new TypeOfHelper('test');
-      expect(helper.notTypeof('string')).toBe(false);
+      expect(helper.notTypeOf('string')).toBe(false);
     });
 
     it('should return undefined if the value is undefined or null', () => {
       const helper = new TypeOfHelper(undefined);
-      expect(helper.notTypeof('string')).toBe(true);
+      expect(helper.notTypeOf('string')).toBe(true);
     });
   });
 

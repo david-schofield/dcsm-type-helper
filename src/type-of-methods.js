@@ -18,6 +18,7 @@ class TypeOfMethods extends TypeOfHelper {
     const useCases = ['is', 'not', 'everyValueIs', 'everyValueNot', 'someValueIs', 'someValueNot'];
     const types = TypeOfHelper.getTypes.types;
 
+
     /**
      * Defines the methods for the types. The methods are defined as getters. 
      * @example
@@ -32,29 +33,37 @@ class TypeOfMethods extends TypeOfHelper {
         if (['is', 'everyValueIs'].includes(useCase)) {
           Object.defineProperty(this, `${useCase}${capitalized}`, {
             get() {
-              return typeOfHelper.isTypeof(type);
-            }
+              return typeOfHelper.isTypeOf(type);
+            },
+            enumerable: true,
+            configurable: false
           });
         }
         if (['not', 'everyValueNot'].includes(useCase)) {
           Object.defineProperty(this, `${useCase}${capitalized}`, {
             get() {
-              return typeOfHelper.notTypeof(type);
-            }
+              return typeOfHelper.notTypeOf(type);
+            },
+            enumerable: true,
+            configurable: false
           });
         }
         if (useCase === 'someValueIs') {
           Object.defineProperty(this, `${useCase}${capitalized}`, {
             get() {
-              return typeOfHelper.isTypeofValues(type).includes(true);
-            }
+              return typeOfHelper.isTypeOfValues(type).includes(true);
+            },
+            enumerable: true,
+            configurable: false
           });
         }
         if (useCase === 'someValueNot') {
           Object.defineProperty(this, `${useCase}${capitalized}`, {
             get() {
-              return typeOfHelper.notTypeofValues(type).includes(true);
-            }
+              return typeOfHelper.notTypeOfValues(type).includes(true);
+            },
+            enumerable: true,
+            configurable: false
           });
         }
       });
@@ -128,16 +137,61 @@ class TypeOfMethods extends TypeOfHelper {
     /**
      * Defines the methods for the other helper methods. The methods are defined as getters.
      */
-    this.helperMethodsList = Object.keys(helperMethods);
-    this.helperMethodsList.forEach((method) => {
+    Object.keys(helperMethods).forEach((method) => {
       useCases.forEach((useCase) => {
         Object.defineProperty(this, `${useCase}${method}`, {
           get() {
             return helperMethods[method](useCase);
-          }
+          },
+          enumerable: true,
+          configurable: false
         });
       });
     });
+  }
+
+
+
+  /**
+   * Returns an object containing arrays of method names for various use cases, helper names, type names, and combined type and helper names.
+   * @returns {{useCases: string[], typeNames: string[], helperNames: string[], typeAndHelperNames: string[], methodNames: string[]}} An object containing arrays of method names for various use cases, helper names, type names, and combined type and helper names.
+   */
+  static get getMethodNames() {
+
+    const useCases = ['is', 'not', 'everyValueIs', 'everyValueNot', 'someValueIs', 'someValueNot'];
+    const helperNames = [
+      'EmptyArray',
+      'EmptyObject',
+      'EmptyString',
+      'Empty',
+      'BooleanTrue',
+      'BooleanFalse',
+      'NumberZero',
+      'NumberPositive',
+      'NumberNegative',
+      'NumberMaxSafeInteger'
+    ];
+    const typeNames = TypeOfHelper.getTypes.capitalized;
+
+    const typeAndHelperNames = [
+      ...typeNames,
+      ...helperNames
+    ];
+
+    const methodNames = [];
+    typeAndHelperNames.forEach((method) => {
+      useCases.forEach((useCase) => {
+        methodNames.push(`${useCase}${method}`);
+      });
+    });
+
+    return {
+      useCases,
+      typeNames,
+      helperNames,
+      typeAndHelperNames,
+      methodNames
+    };
   }
 
 }
@@ -152,55 +206,31 @@ class TypeOfMethods extends TypeOfHelper {
  * help();
  */
 function help() {
-  //const availableMethods = Object.getOwnPropertyNames(new TypeOfMethods(1, 2, 3)).filter((prop) => typeof new TypeOfMethods(1, 2, 3)[prop] === 'boolean');
-  const availableMethods = [
-    ...TypeOfHelper.getTypes.capitalized,
-    ...Object.values(new TypeOfMethods(2).helperMethodsList)
-  ];
-  const useCases = ['is', 'not', 'everyValueIs', 'everyValueNot', 'someValueIs', 'someValueNot'];
+
+  const {
+    methodNames,
+    useCases,
+    typeNames,
+    helperNames,
+    typeAndHelperNames: availableMethods
+  } = TypeOfMethods.getMethodNames;
+
+
   const help = `
 
+The name of each type and helper method is a combination of a 'use case' name and a 'type/helper' name.
+For instance, the method 'isString' which checks if one or all values are a string is a combination of the 'use case' name 'is' and the 'type/helper' name 'String'.
 
-These are the available getter methods that return a boolean value for the given use case for the given type.
-Each method name has a corresponding method for each use case as a prefix to the method name.
-The use cases are: ${useCases.join(', ')}.
- \n${availableMethods.join('\n')}
+The 'use case' names are:
+is            // checks if all values are of the specified 'type/helper'
+not           // checks if all values are not of the specified 'type/helper'
+everyValueIs  // same as the 'is' 'use case'
+everyValueNot // same as the 'not' 'use case'
+someValueIs   // checks if at least one value is of the specified 'type/helper'
+someValueNot  // checks if at least one value is not of the specified 'type/helper'
 
-@examples
-// For the method name 'String' the following methods are available:
-// isString, notString, everyValueIsString, everyValueNotString, someValueIsString, someValueNotString
-const typeOf = new TypeOf(1, '2', 3);
-console.log(
-  typeOf.isString,            // false  - because not all values are strings
-  typeOf.notString,           // true   - because not all values are strings. Same as !typeOf.isString
-  typeOf.everyValueIsString,  // false  - same as typeOf.isString
-  typeOf.everyValueNotString, // true   - same as typeOf.notString
-  typeOf.someValueIsString,   // true   - because at least one value is a string
-  typeOf.someValueNotString); // true   - because at least one value is a string. Same as !typeOf.someValueIsString
-
----------------------------------------
- 
-Set and get the options for the instance.
-setOptions
-getOptions
-
----------------------------------------
-
-Check if all values are of the specified type. Returns boolean or array of booleans.
-${['isTypeof', 'notTypeof', 'isTypeofValues', 'notTypeofValues'].join('\n')}
-
----------------------------------------
-
-Get the type of the values as a string or an array of strings.
-getTypeof(options); 
-// options is an optional object with the following properties:
-// enableCapitalizedTypeNames: boolean - If true, the first letter of the type name will be capitalized.
-// disableThrowErrors: boolean - If true, errors will not be thrown.
-
-@examples
-const typeOf = new TypeOf(1, '2', {}, [], new RegExp());
-const options = {enableCapitalizedTypeNames: true, disableThrowErrors: true};
-typeOf.getTypeof(options); // ['Number', 'String', 'Object', 'Array', 'RegExp']
+The 'type/helper' names are:
+${availableMethods.join('\n')}
 
 `;
   console.log(help);

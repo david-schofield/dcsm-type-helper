@@ -199,10 +199,10 @@ Valid options are:
     });
   });
 
-  describe('getTypeof', () => {
+  describe('getTypeOf', () => {
     it('should return an array of booleans if any values are undefined', () => {
       const instance = new TypeOfMethods(1, '2', true, undefined);
-      expect(instance.getTypeof()).toEqual(['number', 'string', 'boolean', 'undefined']);
+      expect(instance.getTypeOf()).toEqual(['number', 'string', 'boolean', 'undefined']);
     });
   });
 

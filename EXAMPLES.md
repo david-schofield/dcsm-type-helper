@@ -19,31 +19,31 @@ When you run this code, you should see the help text for the `TypeOf` class logg
 
 ---
 
-### getTypeof
-The `getTypeof` function takes one or more values as arguments and returns the type of each value as a string or an array of strings. The type of a value is determined using the `TypeOf` class, which is also exported from the `index.js` file.
+### getTypeOf
+The `getTypeOf` function takes one or more values as arguments and returns the type of each value as a string or an array of strings. The type of a value is determined using the `TypeOf` class, which is also exported from the `index.js` file.
 
-Here are three examples of how to use the `getTypeof` function:
+Here are three examples of how to use the `getTypeOf` function:
 
 ```javascript
-import { getTypeof } from "dcsm-type-helper";
+import { getTypeOf } from "dcsm-type-helper";
 
-const stringType = getTypeof("hello");
+const stringType = getTypeOf("hello");
 console.log(stringType); // "string"
 
-const arrayType = getTypeof([1, 2, 3]);
+const arrayType = getTypeOf([1, 2, 3]);
 console.log(arrayType); // "array"
 
-const mixedType = getTypeof("hello", 42, true);
+const mixedType = getTypeOf("hello", 42, true);
 console.log(mixedType); // ["string", "number", "boolean"]
 ```
 
-In the first example, we pass a single string value to the `getTypeof` function and it returns the string `"string"`, which is the type of the value.
+In the first example, we pass a single string value to the `getTypeOf` function and it returns the string `"string"`, which is the type of the value.
 
-In the second example, we pass an array of numbers to the `getTypeof` function and it returns the string `"array"`, which is the type of the value.
+In the second example, we pass an array of numbers to the `getTypeOf` function and it returns the string `"array"`, which is the type of the value.
 
-In the third example, we pass three values of different types to the `getTypeof` function and it returns an array of strings `["string", "number", "boolean"]`, which are the types of the values.
+In the third example, we pass three values of different types to the `getTypeOf` function and it returns an array of strings `["string", "number", "boolean"]`, which are the types of the values.
 
-Note that the `getTypeof` function can take any number of arguments, and it will return an array of types if more than one argument is passed.
+Note that the `getTypeOf` function can take any number of arguments, and it will return an array of types if more than one argument is passed.
 
 ---
 
@@ -56,35 +56,35 @@ The `options` object can have the following properties:
 
 - `disableThrowErrors`: A boolean value indicating whether to disable throwing errors. If `true`, the `TypeOf` class will not throw errors when invalid options are provided. If `false` (the default), the `TypeOf` class will throw errors when invalid options are provided.
 
-Here are three examples of how to use the `setOptions` method with the `getTypeof` function:
+Here are three examples of how to use the `setOptions` method with the `getTypeOf` function:
 
 ```javascript
-import { getTypeof, TypeOf } from "dcsm-type-helper";
+import { getTypeOf, TypeOf } from "dcsm-type-helper";
 
 // Example 1: Using capitalized type names
 const typeOfCapitalized = new TypeOf("hello", 42, true);
 typeOfCapitalized.setOptions = { enableCapitalizedTypeNames: true };
-const stringType = getTypeof(typeOfCapitalized, "hello");
+const stringType = getTypeOf(typeOfCapitalized, "hello");
 console.log(stringType); // ["Boolean", "String"]
 
 // Example 2: Disabling error throwing
 const typeOfNoErrors = new TypeOf("hello", 42, true);
 typeOfNoErrors.setOptions = { disableThrowErrors: true };
-const types = getTypeof(typeOfNoErrors, "hello", 42, true);
+const types = getTypeOf(typeOfNoErrors, "hello", 42, true);
 console.log(types); // ["string", "number", "boolean"]
 
 // Example 3: Using both capitalized type names and disabling error throwing
 const typeOfCapitalizedAndNoErrors = new TypeOf("hello", 42, true);
 typeOfCapitalizedAndNoErrors.setOptions = { enableCapitalizedTypeNames: true, disableThrowErrors: true };
-const mixedType = getTypeof(typeOfCapitalizedAndNoErrors, "hello", 42, true);
+const mixedType = getTypeOf(typeOfCapitalizedAndNoErrors, "hello", 42, true);
 console.log(mixedType); // ["String", "Number", "Boolean"]
 ```
 
-In the first example, we create a new instance of the `TypeOf` class with several different values and then use the `setOptions` method to set the `enableCapitalizedTypeNames` option to `true`. We then pass the instance of the `TypeOf` class and a string value to the `getTypeof` function, which returns an array of types `["Boolean", "String"]`. Because we're using capitalized type names, the type names are capitalized.
+In the first example, we create a new instance of the `TypeOf` class with several different values and then use the `setOptions` method to set the `enableCapitalizedTypeNames` option to `true`. We then pass the instance of the `TypeOf` class and a string value to the `getTypeOf` function, which returns an array of types `["Boolean", "String"]`. Because we're using capitalized type names, the type names are capitalized.
 
-In the second example, we create a new instance of the `TypeOf` class with several different values and then use the `setOptions` method to set the `disableThrowErrors` option to `true`. We then pass the instance of the `TypeOf` class and several values of different types to the `getTypeof` function, which returns an array of types `["string", "number", "boolean"]`. Because we've disabled error throwing, the function returns the types of the values instead of throwing an error.
+In the second example, we create a new instance of the `TypeOf` class with several different values and then use the `setOptions` method to set the `disableThrowErrors` option to `true`. We then pass the instance of the `TypeOf` class and several values of different types to the `getTypeOf` function, which returns an array of types `["string", "number", "boolean"]`. Because we've disabled error throwing, the function returns the types of the values instead of throwing an error.
 
-In the third example, we create a new instance of the `TypeOf` class with several different values and then use the `setOptions` method to set both the `enableCapitalizedTypeNames` and `disableThrowErrors` options to `true`. We then pass the instance of the `TypeOf` class and several values of different types to the `getTypeof` function, which returns an array of types `["String", "Number", "Boolean"]`. Because we're using both capitalized type names and disabling error throwing, the type names are capitalized and the function returns the types of the values instead of throwing an error.
+In the third example, we create a new instance of the `TypeOf` class with several different values and then use the `setOptions` method to set both the `enableCapitalizedTypeNames` and `disableThrowErrors` options to `true`. We then pass the instance of the `TypeOf` class and several values of different types to the `getTypeOf` function, which returns an array of types `["String", "Number", "Boolean"]`. Because we're using both capitalized type names and disabling error throwing, the type names are capitalized and the function returns the types of the values instead of throwing an error.
 
 ---
 

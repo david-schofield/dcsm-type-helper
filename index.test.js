@@ -6,27 +6,27 @@ import {
 
 describe("TypeOf", () => {
 
-  describe("getTypeof", () => {
-    test("getTypeof returns the correct type for a string", () => {
-      const result = new TypeOf("hello").getTypeof();
+  describe("getTypeOf", () => {
+    test("getTypeOf returns the correct type for a string", () => {
+      const result = new TypeOf("hello").getTypeOf();
       expect(result).toBe("string");
     });
 
-    test("getTypeof returns the correct type for a number", () => {
-      const result = new TypeOf(42).getTypeof();
+    test("getTypeOf returns the correct type for a number", () => {
+      const result = new TypeOf(42).getTypeOf();
       expect(result).toBe("number");
     });
 
-    test("getTypeof returns the correct type for an array", () => {
-      const result = new TypeOf([1, 2, 3]).getTypeof();
+    test("getTypeOf returns the correct type for an array", () => {
+      const result = new TypeOf([1, 2, 3]).getTypeOf();
       expect(result).toBe("array");
     });
 
-    test("getTypeof returns the correct type for an object", () => {
+    test("getTypeOf returns the correct type for an object", () => {
       const result = new TypeOf({
         name: "John",
         age: 30
-      }).getTypeof();
+      }).getTypeOf();
       expect(result).toBe("object");
     });
   });
@@ -34,17 +34,17 @@ describe("TypeOf", () => {
 
   describe("typeOf", () => {
     test("returns the correct type for a string", () => {
-      const result = typeOf("hello");
+      const result = typeOf("hello").getTypeOf();
       expect(result).toBe("string");
     });
 
     test("returns the correct type for a number", () => {
-      const result = typeOf(42);
+      const result = typeOf(42).getTypeOf();
       expect(result).toBe("number");
     });
 
     test("returns the correct type for an array", () => {
-      const result = typeOf([1, 2, 3]);
+      const result = typeOf([1, 2, 3]).getTypeOf();
       expect(result).toBe("array");
     });
 
@@ -52,7 +52,7 @@ describe("TypeOf", () => {
       const result = typeOf({
         name: "John",
         age: 30
-      });
+      }).getTypeOf();
       expect(result).toBe("object");
     });
   });

@@ -107,7 +107,7 @@ class TypeOfHelper {
    * @throws {NoValuesToCheckError} - If there are no values to check.
    * @throws {UnknownTypeError} - If an unknown type is detected.
    */
-  getTypeof(options = {}) {
+  getTypeOf(options = {}) {
     this.#validateOptions(options);
     if (this.#valuesToCheck.length === 0) {
       this.#handleError(this.#errorMessages.noValuesToCheck, 'NoValuesToCheckError');
@@ -137,7 +137,7 @@ class TypeOfHelper {
    * @param {Object} [options={}] - An optional object containing options to configure the behavior of the function.
    * @returns {(boolean[]|undefined)} - An array of booleans indicating whether each value in the valuesToCheck array matches the given typeToCheck, or undefined if an error occurred.
    */
-  isTypeofValues(typeToCheck, options = {}) {
+  isTypeOfValues(typeToCheck, options = {}) {
     this.#validateOptions(options);
     if (this.#valuesToCheck.length === 0) {
       this.#handleError(this.#errorMessages.noValuesToCheck, 'NoValuesToCheckError');
@@ -150,7 +150,7 @@ class TypeOfHelper {
 
     typeToCheck = typeToCheck.toLowerCase();
 
-    const typeOfValues = this.getTypeof(options);
+    const typeOfValues = this.getTypeOf(options);
     const isValuesResult = [];
     if (typeOfValues === undefined) {
       return undefined;
@@ -178,12 +178,12 @@ class TypeOfHelper {
    * @param {boolean} [options.allowNull=false] - Whether to allow null values.
    * @returns {boolean|undefined} - Returns true if the value matches the type, false otherwise. If the value is undefined, returns undefined.
    */
-  isTypeof(typeToCheck, options = {}) {
-    const isTypeofValues = this.isTypeofValues(typeToCheck, options);
-    if (isTypeofValues === undefined) {
+  isTypeOf(typeToCheck, options = {}) {
+    const isTypeOfValues = this.isTypeOfValues(typeToCheck, options);
+    if (isTypeOfValues === undefined) {
       return undefined;
     }
-    return isTypeofValues.every((isType) => isType === true);
+    return isTypeOfValues.every((isType) => isType === true);
   }
 
 
@@ -194,18 +194,18 @@ class TypeOfHelper {
    * @param {Object} [options={}] - Optional configuration options.
    * @returns {Array<boolean>|undefined} - An array of booleans indicating whether the values in the instance are not of the specified type, or undefined if there are no values to check or the type to check is invalid.
    */
-  notTypeofValues(typeToCheck, options = {}) {
+  notTypeOfValues(typeToCheck, options = {}) {
     this.#validateOptions(options);
     if (this.#valuesToCheck.length === 0) {
       this.#handleError(this.#errorMessages.noValuesToCheck, 'NoValuesToCheckError');
       return undefined;
     }
-    const isTypeofValues = this.isTypeofValues(typeToCheck, options);
-    if (isTypeofValues === undefined) {
+    const isTypeOfValues = this.isTypeOfValues(typeToCheck, options);
+    if (isTypeOfValues === undefined) {
       return undefined;
     }
     // map over the array of booleans and return the opposite.
-    return isTypeofValues.map((isType) => !isType);
+    return isTypeOfValues.map((isType) => !isType);
   }
 
 
@@ -215,12 +215,12 @@ class TypeOfHelper {
    * @param {Object} [options={}] - Optional parameters.
    * @returns {boolean|undefined} - Returns true if the type of the value is not equal to the specified type, false otherwise. Returns undefined if the value is undefined or null.
    */
-  notTypeof(typeToCheck, options = {}) {
-    const notTypeofValues = this.notTypeofValues(typeToCheck, options);
-    if (notTypeofValues === undefined) {
+  notTypeOf(typeToCheck, options = {}) {
+    const notTypeOfValues = this.notTypeOfValues(typeToCheck, options);
+    if (notTypeOfValues === undefined) {
       return undefined;
     }
-    return notTypeofValues.every((notType) => notType === true);
+    return notTypeOfValues.every((notType) => notType === true);
   }
 
 
