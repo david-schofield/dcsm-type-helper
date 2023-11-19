@@ -1,7 +1,7 @@
 {
   "name": "dcsm-type-helper",
   "description": "A vanilla JavaScript library for checking the type of variables in a more robust and accurate way than the typeof operator",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "repository": "david-schofield/dcsm-type-helper",
   "main": "./index.js",
   "types": "./index.d.ts",
@@ -47,6 +47,6 @@
   "license": "MPL-2.0",
   "devDependencies": {
     "jest": "^27.0.6",
-    "dcsm-print": "^1.1.0"
+    "dcsm-print": "^1.2"
   }
 }
